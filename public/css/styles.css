@@ -1,0 +1,231 @@
+body {
+	background-color: #ECE8DD;
+	font-family: 'Lato', sans-serif;
+	font-size: 20px;
+	margin: 0 !important;
+	text-align: center !important;
+}
+
+h1 {
+	font-size: 2.5rem;
+	margin: 0;
+	padding: 2.5% 2.5% 2.5% 1%;
+	text-align: center;
+}
+
+.header {
+	background-color: #579BB1;
+	color: #F8F4EA;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.main-icon {
+	float: left;
+}
+
+#topnav {
+	background-color: #E1D7C6;
+	text-align: center;
+}
+
+.menu {
+	list-style-type: none;
+	margin: 0;
+	padding: 10px;
+	font-size: 18px;
+	min-height: 38px;
+	line-height: 200%;
+}
+
+.menu > li {
+	display: inline-block;
+	padding-left: 20px;
+	padding-right: 20px;
+	border-right: 1px dashed #0a2b42;
+	
+}
+
+.menu > li:first-child
+{
+	border-left: 1px dashed #0a2b42;
+}
+
+.menu a {
+	color: #579BB1;
+	text-decoration: none;
+}
+
+.menu a:hover {
+	color: #F8F4EA;
+}
+
+.main-image {
+	width: 25rem;
+	margin-right: 50px;
+}
+
+#container {
+	padding: 50px;
+	margin: 80px 15% 5% 15%;
+}
+
+.cytat {
+	color: #579BB1;
+	text-align: justify;
+}
+
+.powitanie {
+	padding-top: 50px;
+}
+
+#container2
+{
+	width: 450px;
+	padding: 10px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 10px;
+}
+
+#wydatek
+{
+	width: 100%;
+	background-color: #579BB1;
+	color: white;
+	border-radius: 10px;
+	font-size: 20px;
+	padding: 10px;
+	box-sizing: border-box;
+	outline: none;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	
+}
+
+button
+{
+	width: 100px;
+	background-color: #579BB1;
+	font-size: 20px;
+	color: white;
+	padding: 15px 10px;
+	margin-top: 10px;
+	border: none;
+	border-radius: 10px;
+	cursor: pointer;
+	letter-spacing: 2px;
+	outline: none;
+}
+
+button:hover
+{
+	background-color: #046383;
+}
+
+#button1
+{
+	margin-right: 110px;
+}
+
+#button2
+{
+	margin-left: 110px;
+}
+
+#button1:hover {
+	background-color: #0ab044;
+}
+
+#button2:hover {
+	background-color: #b00a0a;
+}
+
+#komentarz
+{
+	resize: none;
+}
+
+#bilans
+{
+	text-align: center;
+	width: 300px;
+	background-color: #579BB1;
+	color: white;
+	border: 2px solid #579BB1;
+	border-radius: 10px;
+	font-size: 20px;
+	padding: 10px;
+	box-sizing: border-box;
+	outline: none;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	
+}
+
+input[type=submit]
+{
+	width: 300px;
+	background-color: #579BB1;
+	font-size: 20px;
+	color: white;
+	padding: 15px 10px;
+	margin-top: 20px;
+	border: none;
+	border-radius: 10px;
+	cursor: pointer;
+	letter-spacing: 2px;
+	outline: none;
+}
+
+input[type=submit]:hover
+{
+	background-color: #046383;
+}
+
+#container3
+{
+	width: 300px;
+	padding: 10px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 10px;
+}
+
+.logowanie {
+	display: inline-block;
+}
+
+#formSignup {
+	display: inline-block !important;
+}
+
+#formResetPassword {
+	display: inline-block !important;
+}
+
+#formPassword {
+	display: inline-block;
+}
+
+#formProfile{
+	display: inline-block;
+}
+
+.my-budget {
+	color: #F8F4EA;
+	text-decoration: none;
+}
+
+@media (max-width: 1028px) {
+    .cytat {
+		padding-top: 50px;
+	}
+
+	.main-image {
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+	}
+}

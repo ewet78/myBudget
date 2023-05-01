@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Menu główne{% endblock %}</title>
+    <meta name="description" content="Menu główne w aplikacji do prowadzenia budżetu osobistego " />
+	<meta name="keywords" content="menu, budżet osobisty, użytkownik" />
+	<meta http-equiv="X_UA_Compatible" content="IE=edge,chrome=1" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/styles.css" />
+
+    <script src="https://kit.fontawesome.com/26d8768c67.js" crossorigin="anonymous"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+    <header>
+		<div class="header">
+			<i class="main-icon fa-solid fa-sack-dollar fa-2x"></i>
+			<h1>MyBudget</h1>
+			<div style="clear: both;"></div>
+		</div>
+	</header>
+
+	<nav id="topnav">
+		<ul class="menu">
+			<li><a href="/login"><i class="fa-sharp fa-solid fa-right-from-bracket"></i>  Zaloguj się</a></li>	
+			<li><a href="/signup/new"><i class="fa-sharp fa-solid fa-right-from-bracket"></i>  Zarejestruj się</a></li>
+		</ul>
+	</nav>
+	
+	<main>
+		<div id="container">
+			<div class="row">
+				<div class="main-image col-lg-6">
+				<img class="main-image" src="http://localhost/img/main-image.jpg">
+				</div>
+				<div class="cytat col-lg-6">
+					<p><em>„Puste kieszenie nigdy nie powstrzymały nikogo przed podjęciem działania. Mogą to zrobić tylko puste głowy i puste serca”</em> – Norman Vincent Peale</p>
+					<p class="powitanie">Witaj w aplikacji do prowadzenia bilansu budżetu osobistego. Wprowadzaj wydatki oraz przychody, edytuj, usuwaj, dodawaj własne kategorie.
+                        Sprawdzaj na bieżąco bilans z wybranego okresu czasu. Miej kontrolę nad swymi pieniędzmi.
+                    </p>
+				</div>
+			</div>
+		</div>
+	</main>
+
+    {% for message in flash_messages %}
+    <div class="alert alert-{{ message.type }}">
+        {{ message.body }}
+    </div>
+    {% endfor %}
+
+    <script
+    src="https://code.jquery.com/jquery-3.6.4.min.js"
+    integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+    crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/additional-methods.min.js" integrity="sha512-6S5LYNn3ZJCIm0f9L6BCerqFlQ4f5MwNKq+EthDXabtaJvg3TuFLhpno9pcm+5Ynm6jdA9xfpQoMz2fcjVMk9g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</body>
+</html>

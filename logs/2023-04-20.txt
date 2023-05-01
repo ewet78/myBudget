@@ -1,0 +1,4 @@
+[20-Apr-2023 21:11:56 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 C:\Program Files\Ampps\www\public\index.php(53): Core\Router->dispatch('favicon.ico')
+#1 {main}
+Thrown in 'C:\Program Files\Ampps\www\Core\Router.php' on line 134
