@@ -60,5 +60,6 @@ $router->add('signup/activate/{token:[\da-f]+}', ['controller' => 'Signup', 'act
 $router->add('admin/{controller}/{action}', ['namespace' => 'Admin']);
 
 $router->add('home', ['controller' => 'HomeLogin', 'action' => 'index']);
+$router->add('profile/update', ['controller' => 'Profile', 'action' => 'show']);
 
 $router->dispatch($_SERVER['QUERY_STRING']);
