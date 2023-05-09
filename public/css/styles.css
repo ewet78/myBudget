@@ -134,6 +134,12 @@ button:hover
 	margin-left: 110px;
 }
 
+#button2anuluj
+{
+	text-decoration: none;
+	color: white;
+}
+
 #button1:hover {
 	background-color: #0ab044;
 }

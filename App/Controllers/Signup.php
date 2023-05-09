@@ -32,7 +32,7 @@ class Signup extends \Core\Controller
         $user = new User($_POST);
 
         if ($user->save()) {
-
+        
         $user->sendActivationEmail();
 
         $this->redirect('/signup/success');
@@ -58,13 +58,14 @@ class Signup extends \Core\Controller
 
 
     /**
-     * Activate a new account
+     * Activate a new account and copy default tables to tables assigned to users
      * 
      * @return void
      */
     public function activateAction()
     {
-        User::activate($this->route_params['token']);
+
+       User::copyDefaultTables(User::activate($this->route_params['token']));
 
         $this->redirect('/signup/activated');
     }

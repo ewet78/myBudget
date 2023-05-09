@@ -5,6 +5,7 @@ namespace App\Models;
 use PDO;
 use \App\Token; 
 use \App\Mail;
+use \App\Auth;
 use \Core\View;
 
 /**
@@ -80,6 +81,37 @@ class User extends \Core\Model
 
     return false;
   }
+
+
+
+/**
+ * Copy default category of expenses and incomes to 
+ * tables dedicated to users
+ * 
+ * @return void
+ */
+  public static function copyDefaultTables($usersData)
+  {
+    $sql = 'INSERT INTO incomes_category_assigned_to_users (user_id, name)
+            SELECT :user_id, name 
+            FROM incomes_category_default;
+            INSERT INTO expenses_category_assigned_to_users (user_id, name)
+            SELECT :user_id, name 
+            FROM expenses_category_default;
+            INSERT INTO payment_methods_assigned_to_users (user_id, name)
+            SELECT :user_id, name 
+            FROM payment_methods_default';
+
+    $db = static::getDB();
+    
+    $stmt = $db->prepare($sql);
+
+    $stmt->bindValue(':user_id', $usersData->id, PDO::PARAM_INT);
+
+    return $stmt->execute();
+
+  }
+
 
   /**
    * Validate current property values, adding validation error messages to the errors array property
@@ -399,14 +431,16 @@ class User extends \Core\Model
      * 
      * @param string $value Activation token from the URL
      * 
-     * @return void
+     * @return User object
      */
     public static function activate($value)
     {
         $token = new Token($value);
         $hashed_token = $token->getHash();
 
-        $sql = 'UPDATE users
+        $sql = 'SELECT * FROM users 
+                WHERE activation_hash = :hashed_token;
+                UPDATE users
                 SET is_active = 1,
                     activation_hash = null
                 WHERE activation_hash = :hashed_token';
@@ -416,7 +450,13 @@ class User extends \Core\Model
 
         $stmt->bindValue(':hashed_token', $hashed_token, PDO::PARAM_STR);
 
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+
         $stmt->execute();
+
+        return $stmt->fetch();
+
+
     }
 
 
@@ -471,4 +511,88 @@ class User extends \Core\Model
 
         return false;
     }
+
+
+
+    /**
+     * Add new expense
+     * 
+     * @param array $data Data from the add new expense form
+     * 
+     * @return boolean True if the data was updated, false otherwise
+     */
+    public function addNewExpense($data)
+    {
+        $user_id = Auth::getUser()->id;
+
+        $this->amount = $data['amount'];
+        $this->date = $data['date_of_expense'];
+        $this->payment_method = $this->getIdOfPaymentMethod($data['payment_method_assigned_to_user_id'], $user_id);
+        $this->expense_category = $this->getIdOfExpenseCategory($data['expense_category_assigned_to_user_id'], $user_id);
+        $this->comment = $data['expense_comment'];
+
+        if (empty($this->errors)) {
+            $sql = 'INSERT INTO expenses (user_id, expense_category_assigned_to_user_id, payment_method_assigned_to_user_id, amount, date_of_expense, expense_comment)
+                    VALUES (:user_id, :expense_category_assigned_to_user_id, :payment_method_assigned_to_user_id, :amount, :date_of_expenses, :expense_comment)';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+            $stmt->bindValue(':expense_category_assigned_to_user_id', $this->expense_category, PDO::PARAM_INT);
+            $stmt->bindValue(':payment_method_assigned_to_user_id', $this->payment_method, PDO::PARAM_INT);
+            $stmt->bindValue(':amount', $this->amount);
+            $stmt->bindValue(':date_of_expenses', $this->date, PDO::PARAM_STR);
+            $stmt->bindValue(':expense_comment', $this->comment, PDO::PARAM_STR);
+
+            return $stmt->execute();  
+        }
+
+        return false;
+
+    }
+
+
+    public function getIdOfExpenseCategory($name, $id)
+    {
+        $sql = 'SELECT id
+                FROM expenses_category_assigned_to_users
+                WHERE user_id = :id AND name = :name';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':name', $name, PDO::PARAM_STR);
+        
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+
+        $stmt->execute();
+
+        $category_id = $stmt->fetch()->id;
+
+        return $category_id;
+    }
+
+    public function getIdOfPaymentMethod($name, $id)
+    {
+        $sql = 'SELECT id
+                FROM  payment_methods_assigned_to_users
+                WHERE user_id = :id AND name = :name';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':name', $name, PDO::PARAM_STR);
+        
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+
+        $stmt->execute();
+
+        $category_id = $stmt->fetch()->id;
+
+        return $category_id;
+    }
+    
 }
