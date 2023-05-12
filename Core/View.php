@@ -5,7 +5,7 @@ namespace Core;
 /**
  * View
  *
- * PHP version 7.4
+ * PHP version 8.2
  */
 class View
 {
@@ -61,7 +61,8 @@ class View
 
         if ($twig === null) {
             $loader = new \Twig\Loader\FilesystemLoader('../App/Views');
-            $twig = new \Twig\Environment($loader);
+            $twig = new \Twig\Environment($loader, ['debug'=>true]);
+            $twig->addExtension(new \Twig\Extension\DebugExtension());
             $twig->addGlobal('current_user', \App\Auth::getUser());
             $twig->addGlobal('flash_messages', \App\Flash::getMessages());
         }

@@ -1,3 +1,7 @@
+<?php
+	$results = array();
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,59 +15,6 @@
     <link rel="stylesheet" href="/css/styles.css" />
 
     <script src="https://kit.fontawesome.com/26d8768c67.js" crossorigin="anonymous"></script>
-
-    <script src="/js/hideShowPassword.min.js"></script>
-<script src="/js/app.js"></script>
-
-<script>
-
-
-   $(document).ready(function() {
-
-    var userId = '{{ user.id }}';
-
-    /**
-    * Validate the form
-    */
-    $('#formProfile').validate({
-        rules: {
-            name: 'required',
-            email: {
-                required: true,
-                email: true,
-                remote: {
-                        url: '/aacount/validate-email',
-                        data: {
-                        ignore_id: function() {
-                            return userId;
-                            }
-                        }
-                    }
-            },
-            password: {
-                minlength: 6,
-                validPassword: true
-            }
-           
-        },
-        massages: {
-                email: {
-                    remote: 'Email already taken'
-                }
-            }
-    });
-    /**
-    * Show password toggle button
-    */
-
-    $('#inputPassword').hideShowPassword({
-        show: false,
-        innerToggle: 'focus'
-
-    });
-    
-    });
-</script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -92,34 +43,51 @@
 	</nav>
 	
 	<main>
-        {% if user.errors is not empty %}
-        <p>Errors:</p>
-        <ul>
-            {% for error in user.errors %}
-                <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+		<div class="bilansprzychodow">
+			<h3>Przychody</h3>
+			<ul>
+				{% set sum1 = 0 %}
+				{% for incomes in incomes %}
+						<p>{{ incomes.suma_przychodów }} - {{ incomes.nazwa_kategorii }}</p>
+						{% set sum1=sum1+(incomes.suma_przychodów) %}
+				{% endfor %}
+				<hr>
+				<p>SUMA: {{ sum1 }}</p>
+			</ul>
+		</div>
+		<div class="bilanswydatkow">
+			<h3>Wydatki</h3>
+			<ul>
+				{% set sum2 = 0 %}
+				{% set wydatki=["['Kategoria', 'Suma wydatków'],"] %}
+				{% for expenses in expenses %}
+						<p>{{ expenses.suma_wydatków }} - {{ expenses.nazwa_kategorii }}</p>
+						{% set sum2=sum2+(expenses.suma_wydatków) %}
+						{% set wydatki= wydatki|merge([
+							"['"~expenses.nazwa_kategorii~"', "~expenses.suma_wydatków~"]," 
+						]) %}
+				{% endfor %}
+				<hr>
+				<p>SUMA: {{ sum2 }}</p>
+			</ul>
+		</div>
 
-    <form method="post"  id="formProfile" action="/profile/update">
-        <div class="form-group">
-            <label for="inputName">Name</label>
-            <input id="inputName" name="name" placeholder="Name" value="{{ user.name }}" required class="form-control"/>
-        </div>
-        <div class="form-group">
-            <label for="inputEmail">Email address</label>
-            <input id="inputEmail" name="email" placeholder="email address" value="{{ user.email }}" required type="email" class="form-control" />
-        </div>
-        <div class="form-group">
-            <label for="inputPassword">Password</label>
-            <input type="password" id="inputPassword" name="password" placeholder="Password" aria-describedby="helpBlock" class="form-control"/>
-            <span id="helpBlock" class="help-block">Leave blank to keep current password</span>
-        </div>
-
-        <button type="submit">Save</button>
-        <a href="/profile/show">Cancel</a>
-
-    </form>
+		<div class="bilans">
+			<h3>Bilans</h3>
+			{% set sum3 = sum1 - sum2 %}
+			{{ sum3 }}
+			{% if sum3 < 0 %}
+			<p>Uwaga! Wpadasz w długi.</p>
+			<style> .bilans{background-color: rgb(215, 78, 78);}</style>
+			{% endif %}
+			{% if sum3 > 0 %}
+			<p>Gratulacje! Świetnie zarządzasz finansami.</p>
+			<style> .bilans{background-color: rgb(67, 164, 67);}</style>
+			{% endif %}
+		</div>
+		<br>
+		<h3 id="pieChartTitle">Wydatki z wybranego okresu</h3>
+		<div id="piechart"></div>
 	</main>
 
     {% for message in flash_messages %}
@@ -135,5 +103,31 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/additional-methods.min.js" integrity="sha512-6S5LYNn3ZJCIm0f9L6BCerqFlQ4f5MwNKq+EthDXabtaJvg3TuFLhpno9pcm+5Ynm6jdA9xfpQoMz2fcjVMk9g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript">
+		// Load google charts
+		google.charts.load('current', {'packages':['corechart']});
+		google.charts.setOnLoadCallback(drawChart);
+		
+
+		// Draw the chart and set the chart values
+		function drawChart() {
+			var wydatki = [
+				{% for item in wydatki %}
+				{{ item|raw }}
+				{% endfor %}
+				];
+		  	var data = google.visualization.arrayToDataTable(wydatki);
+		
+		  // Optional; add a title and set the width and height of the chart
+		  var options = {'title':'', 'width':600, 'height':400, is3D: true, backgroundColor: '#ECE8DD', 
+		  colors: ['#388ba7', '#639db1', '#7ba8b6', '#8eaeb8', '#9eb5bc', '#aec9d1', '#c8d1d4'],};
+		
+		  // Display the chart inside the <div> element with id="piechart"
+		  var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+		  chart.draw(data, options);
+		}
+	</script>
+		
 </body>
 </html>

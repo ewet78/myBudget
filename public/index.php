@@ -62,4 +62,8 @@ $router->add('admin/{controller}/{action}', ['namespace' => 'Admin']);
 $router->add('home', ['controller' => 'HomeLogin', 'action' => 'index']);
 $router->add('expenses/add', ['controller' => 'Expenses', 'action' => 'add']);
 
+$router->add('balancesheet', ['controller' => 'BalanceSheet', 'action' => 'index']);
+
+$router->add('balancesheet/show/range', ['controller' => 'BalanceSheetRange', 'action' => 'show']);
+
 $router->dispatch($_SERVER['QUERY_STRING']);

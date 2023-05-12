@@ -12,59 +12,6 @@
 
     <script src="https://kit.fontawesome.com/26d8768c67.js" crossorigin="anonymous"></script>
 
-    <script src="/js/hideShowPassword.min.js"></script>
-<script src="/js/app.js"></script>
-
-<script>
-
-
-   $(document).ready(function() {
-
-    var userId = '{{ user.id }}';
-
-    /**
-    * Validate the form
-    */
-    $('#formProfile').validate({
-        rules: {
-            name: 'required',
-            email: {
-                required: true,
-                email: true,
-                remote: {
-                        url: '/aacount/validate-email',
-                        data: {
-                        ignore_id: function() {
-                            return userId;
-                            }
-                        }
-                    }
-            },
-            password: {
-                minlength: 6,
-                validPassword: true
-            }
-           
-        },
-        massages: {
-                email: {
-                    remote: 'Email already taken'
-                }
-            }
-    });
-    /**
-    * Show password toggle button
-    */
-
-    $('#inputPassword').hideShowPassword({
-        show: false,
-        innerToggle: 'focus'
-
-    });
-    
-    });
-</script>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
@@ -92,34 +39,23 @@
 	</nav>
 	
 	<main>
-        {% if user.errors is not empty %}
-        <p>Errors:</p>
-        <ul>
-            {% for error in user.errors %}
-                <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-
-    <form method="post"  id="formProfile" action="/profile/update">
-        <div class="form-group">
-            <label for="inputName">Name</label>
-            <input id="inputName" name="name" placeholder="Name" value="{{ user.name }}" required class="form-control"/>
-        </div>
-        <div class="form-group">
-            <label for="inputEmail">Email address</label>
-            <input id="inputEmail" name="email" placeholder="email address" value="{{ user.email }}" required type="email" class="form-control" />
-        </div>
-        <div class="form-group">
-            <label for="inputPassword">Password</label>
-            <input type="password" id="inputPassword" name="password" placeholder="Password" aria-describedby="helpBlock" class="form-control"/>
-            <span id="helpBlock" class="help-block">Leave blank to keep current password</span>
-        </div>
-
-        <button type="submit">Save</button>
-        <a href="/profile/show">Cancel</a>
-
-    </form>
+        <div id="container3">
+			<form action="balancesheet/show" method="post">
+				<div id="bilans">
+							<label for="zakresDat">Zakres dat</label>
+							<select id="zakresDat" name="zakresDat">
+								<option value="currentMonth" selected>Bieżący miesiąc</option>
+								<option value="previousMonth">Poprzedni miesiąc</option>
+								<option value="currentYear">Bieżący rok</option>
+								<option value="another">Niestandardowy</option>
+							</select>
+				</div>
+				
+				<div id="submit">
+						<input type="submit" value="Wyświetl bilans">
+				</div>
+			</form>
+		</div>
 	</main>
 
     {% for message in flash_messages %}
