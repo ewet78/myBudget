@@ -104,6 +104,21 @@ h1 {
 	
 }
 
+#przychód
+{
+	width: 100%;
+	background-color: #579BB1;
+	color: white;
+	border-radius: 10px;
+	font-size: 20px;
+	padding: 10px;
+	box-sizing: border-box;
+	outline: none;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	
+}
+
 button
 {
 	width: 100px;
@@ -168,6 +183,49 @@ button:hover
 	margin-top: 20px;
 	margin-bottom: 20px;
 	
+}
+
+.bilansprzychodow
+{
+	background-color: #579BB1;
+	color: #F8F4EA;
+	float: left;
+	width: 400px;
+	margin-left: 300px;
+	margin-bottom: 20px;
+
+}
+
+.bilanswydatkow
+{
+	background-color: #579BB1;
+	color: #F8F4EA;
+	float: right;
+	width: 400px;
+	margin-right: 300px;
+	margin-bottom: 20px;
+
+}
+
+.bilans
+{
+	background-color: #579BB1;
+	color: #F8F4EA;
+	width: 950px;
+	clear: both;
+	margin: auto;
+}
+
+div#piechart
+{
+	margin-left: 500px;
+	position: relative;
+	width: 300 px;
+}
+
+#pieChartTitle
+{
+	color: #579BB1;
 }
 
 input[type=submit]

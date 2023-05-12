@@ -12,59 +12,6 @@
 
     <script src="https://kit.fontawesome.com/26d8768c67.js" crossorigin="anonymous"></script>
 
-    <script src="/js/hideShowPassword.min.js"></script>
-<script src="/js/app.js"></script>
-
-<script>
-
-
-   $(document).ready(function() {
-
-    var userId = '{{ user.id }}';
-
-    /**
-    * Validate the form
-    */
-    $('#formProfile').validate({
-        rules: {
-            name: 'required',
-            email: {
-                required: true,
-                email: true,
-                remote: {
-                        url: '/aacount/validate-email',
-                        data: {
-                        ignore_id: function() {
-                            return userId;
-                            }
-                        }
-                    }
-            },
-            password: {
-                minlength: 6,
-                validPassword: true
-            }
-           
-        },
-        massages: {
-                email: {
-                    remote: 'Email already taken'
-                }
-            }
-    });
-    /**
-    * Show password toggle button
-    */
-
-    $('#inputPassword').hideShowPassword({
-        show: false,
-        innerToggle: 'focus'
-
-    });
-    
-    });
-</script>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
@@ -92,34 +39,36 @@
 	</nav>
 	
 	<main>
-        {% if user.errors is not empty %}
-        <p>Errors:</p>
-        <ul>
-            {% for error in user.errors %}
-                <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+        <div id="container2">
+						
+            <form action="/incomes/new" method="post">
+                <div id="przychód">
+                    <label>Kwota   <input type="number" name="amount" placeholder="0,0" step="0.01" min="0.01" required></label>
+                </div>
+                <div id="przychód">
+                    <label>Data   <input type="date" name="date_of_income" required></label>
+                </div>
+                <div id="przychód">
+                    <label for="kategoria">Kategoria</label>
+                    <select id="kategoria" name="income_category_assigned_to_user_id">
+                    
+                        <option value="Salary">Wynagrodzenie</option>
+                        <option value="Interest">Zainteresowania</option>
+                        <option value="Allegro">Sprzedaż na Allegro</option>
+                        <option value="Another">Inne przychody</option>
 
-    <form method="post"  id="formProfile" action="/profile/update">
-        <div class="form-group">
-            <label for="inputName">Name</label>
-            <input id="inputName" name="name" placeholder="Name" value="{{ user.name }}" required class="form-control"/>
-        </div>
-        <div class="form-group">
-            <label for="inputEmail">Email address</label>
-            <input id="inputEmail" name="email" placeholder="email address" value="{{ user.email }}" required type="email" class="form-control" />
-        </div>
-        <div class="form-group">
-            <label for="inputPassword">Password</label>
-            <input type="password" id="inputPassword" name="password" placeholder="Password" aria-describedby="helpBlock" class="form-control"/>
-            <span id="helpBlock" class="help-block">Leave blank to keep current password</span>
-        </div>
-
-        <button type="submit">Save</button>
-        <a href="/profile/show">Cancel</a>
-
-    </form>
+                    </select>
+                </div>
+                <div id="przychód">
+                    <div><label for="komentarz">Komentarz (opcjonalnie):</label></div>
+                    <textarea name="income_comment" id="komentarz" rows="4" cols="34"></textarea>
+                </div>
+                <div id="przychódSubmit">
+                    <button id="button1" type="submit">Dodaj</button>
+                    <button id="button2"><a href="/home" id="button2anuluj">Anuluj</a></button>
+                </div>
+            </form>
+    </div>
 	</main>
 
     {% for message in flash_messages %}

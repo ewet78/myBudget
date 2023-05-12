@@ -515,7 +515,7 @@ class User extends \Core\Model
 
 
     /**
-     * Add new expense
+     * Add a new expense
      * 
      * @param array $data Data from the add new expense form
      * 
@@ -533,7 +533,7 @@ class User extends \Core\Model
 
         if (empty($this->errors)) {
             $sql = 'INSERT INTO expenses (user_id, expense_category_assigned_to_user_id, payment_method_assigned_to_user_id, amount, date_of_expense, expense_comment)
-                    VALUES (:user_id, :expense_category_assigned_to_user_id, :payment_method_assigned_to_user_id, :amount, :date_of_expenses, :expense_comment)';
+                    VALUES (:user_id, :expense_category_assigned_to_user_id, :payment_method_assigned_to_user_id, :amount, :date_of_expense, :expense_comment)';
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);
@@ -542,7 +542,7 @@ class User extends \Core\Model
             $stmt->bindValue(':expense_category_assigned_to_user_id', $this->expense_category, PDO::PARAM_INT);
             $stmt->bindValue(':payment_method_assigned_to_user_id', $this->payment_method, PDO::PARAM_INT);
             $stmt->bindValue(':amount', $this->amount);
-            $stmt->bindValue(':date_of_expenses', $this->date, PDO::PARAM_STR);
+            $stmt->bindValue(':date_of_expense', $this->date, PDO::PARAM_STR);
             $stmt->bindValue(':expense_comment', $this->comment, PDO::PARAM_STR);
 
             return $stmt->execute();  
@@ -574,6 +574,9 @@ class User extends \Core\Model
         return $category_id;
     }
 
+
+
+
     public function getIdOfPaymentMethod($name, $id)
     {
         $sql = 'SELECT id
@@ -594,5 +597,66 @@ class User extends \Core\Model
 
         return $category_id;
     }
+
+
+     /**
+     * Add a new expense
+     * 
+     * @param array $data Data from the add new expense form
+     * 
+     * @return boolean True if the data was updated, false otherwise
+     */
+    public function addNewIncome($data)
+    {
+        $user_id = Auth::getUser()->id;
+
+        $this->amount = $data['amount'];
+        $this->date = $data['date_of_income'];
+        $this->income_category = $this->getIdOfIncomeCategory($data['income_category_assigned_to_user_id'], $user_id);
+        $this->comment = $data['income_comment'];
+
+        if (empty($this->errors)) {
+            $sql = 'INSERT INTO incomes (user_id, income_category_assigned_to_user_id, amount, date_of_income, income_comment)
+                    VALUES (:user_id, :income_category_assigned_to_user_id, :amount, :date_of_income, :income_comment)';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+            $stmt->bindValue(':income_category_assigned_to_user_id', $this->income_category, PDO::PARAM_INT);
+            $stmt->bindValue(':amount', $this->amount);
+            $stmt->bindValue(':date_of_income', $this->date, PDO::PARAM_STR);
+            $stmt->bindValue(':income_comment', $this->comment, PDO::PARAM_STR);
+
+            return $stmt->execute();  
+        }
+
+        return false;
+
+    }
+
+
+
+    public function getIdOfIncomeCategory($name, $id)
+    {
+        $sql = 'SELECT id
+                FROM incomes_category_assigned_to_users
+                WHERE user_id = :id AND name = :name';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':name', $name, PDO::PARAM_STR);
+        
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+
+        $stmt->execute();
+
+        $category_id = $stmt->fetch()->id;
+
+        return $category_id;
+    }
+
     
 }

@@ -3,14 +3,14 @@
 namespace App\Controllers;
 
 use \Core\View;
-use App\Models\Post;
+use App\Models\BalanceRange;
 
 /**
- * Posts controller
+ * Balance controller
  *
- * PHP version 7.4
+ * PHP version 8.2
  */
-class Posts extends \Core\Controller
+class BalanceSheetRange extends \Core\Controller
 {
 
     /**
@@ -20,22 +20,25 @@ class Posts extends \Core\Controller
      */
     public function indexAction()
     {
-        //echo 'Hello from the index action in the Posts controller!';
-        $posts = Post::getAll();
-
-        View::renderTemplate('Posts/index.html', [
-            'posts' => $posts
-        ]);
+        View::renderTemplate('Balance/index.html');
     }
 
     /**
-     * Show the add new page
+     * Show the balance sheet
      *
      * @return void
      */
-    public function addNewAction()
+    public function showAction()
     {
-        echo 'Hello from the addNew action in the Posts controller!';
+        $balance = new BalanceRange($_POST);
+
+        $balanceIncomes = BalanceRange::getIncomes($_POST);
+        $balanceExpenses = BalanceRange::getExpenses($_POST);
+
+        View::renderTemplate('Balance/show.html', [
+            'incomes' => $balanceIncomes,
+            'expenses' => $balanceExpenses
+        ]);
     }
     
     /**
