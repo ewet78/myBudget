@@ -48,7 +48,7 @@
 			<ul>
 				{% set sum1 = 0 %}
 				{% for incomes in incomes %}
-						<p>{{ incomes.suma_przychodów }} - {{ incomes.nazwa_kategorii }}</p>
+						<p>{{ incomes.nazwa_kategorii }} - {{ incomes.suma_przychodów }}</p>
 						{% set sum1=sum1+(incomes.suma_przychodów) %}
 				{% endfor %}
 				<hr>
@@ -61,7 +61,7 @@
 				{% set sum2 = 0 %}
 				{% set wydatki=["['Kategoria', 'Suma wydatków'],"] %}
 				{% for expenses in expenses %}
-						<p>{{ expenses.suma_wydatków }} - {{ expenses.nazwa_kategorii }}</p>
+						<p>{{ expenses.nazwa_kategorii }} - {{ expenses.suma_wydatków }}</p>
 						{% set sum2=sum2+(expenses.suma_wydatków) %}
 						{% set wydatki= wydatki|merge([
 							"['"~expenses.nazwa_kategorii~"', "~expenses.suma_wydatków~"]," 
@@ -87,7 +87,12 @@
 		</div>
 		<br>
 		<h3 id="pieChartTitle">Wydatki z wybranego okresu</h3>
+		{% if wydatki|length == 1 %}
+		<p>Brak wydatków</p>
+		{% endif %}
+		{% if wydatki|length > 1 %}
 		<div id="piechart"></div>
+		{% endif %}
 	</main>
 
     {% for message in flash_messages %}

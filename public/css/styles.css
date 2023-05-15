@@ -141,12 +141,12 @@ button:hover
 
 #button1
 {
-	margin-right: 110px;
+	margin-left: 110px;
 }
 
 #button2
 {
-	margin-left: 110px;
+	margin-right: 110px;
 }
 
 #button2anuluj

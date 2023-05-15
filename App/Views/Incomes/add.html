@@ -46,7 +46,18 @@
                     <label>Kwota   <input type="number" name="amount" placeholder="0,0" step="0.01" min="0.01" required></label>
                 </div>
                 <div id="przychód">
-                    <label>Data   <input type="date" name="date_of_income" required></label>
+                    <label>Data   <input type="date" id="date_of_income" name="date_of_income" required></label> 
+                    
+                    <script>
+                        // Get today's date
+                        var today = new Date();
+                      
+                        // Format the date as YYYY-MM-DD
+                        var formattedDate = today.toISOString().split('T')[0];
+                      
+                        // Set the value of the input element
+                        document.getElementById('date_of_income').value = formattedDate;
+                    </script>
                 </div>
                 <div id="przychód">
                     <label for="kategoria">Kategoria</label>
@@ -64,11 +75,12 @@
                     <textarea name="income_comment" id="komentarz" rows="4" cols="34"></textarea>
                 </div>
                 <div id="przychódSubmit">
-                    <button id="button1" type="submit">Dodaj</button>
                     <button id="button2"><a href="/home" id="button2anuluj">Anuluj</a></button>
+                    <button id="button1" type="submit">Dodaj</button>
                 </div>
             </form>
     </div>
+
 	</main>
 
     {% for message in flash_messages %}
