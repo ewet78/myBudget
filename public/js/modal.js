@@ -5,8 +5,17 @@ myModal.addEventListener('shown.bs.modal', () => {
   myInput.focus()
 })
 
-jQuery('#date_timepicker_start').datetimepicker();
-jQuery('#date_timepicker_end').datetimepicker();
+$(document).ready(function() {
+  $('#date_timepicker_start').datetimepicker({
+    format: 'Y-m-d',
+    timepicker: false
+  });
+  
+  $('#date_timepicker_end').datetimepicker({
+    format: 'Y-m-d',
+    timepicker: false
+  });
+});
 
 jQuery(function(){
     jQuery('#date_timepicker_start').datetimepicker({
