@@ -21,7 +21,7 @@ class Balance extends \Core\Model
      */
     public static function getIncomes($data)
     {  
-
+        if (isset($data['zakresDat'])){
         if ($data['zakresDat'] === 'currentMonth')
         {
             $Month = date('m');
@@ -86,14 +86,10 @@ class Balance extends \Core\Model
             $end_date = $Year. '-12-31';
 
         }
-
-        if ($data['zakresDat'] === 'another')
-        {
-            View::renderTemplate('Balance/indexmodal.html');
-            exit();           
-
-        }
-        
+    } else {
+        $start_date = $data['start_date'];
+        $end_date = $data['end_date']; 
+    }
         try {
             //$db = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8",
             //              $username, $password);
@@ -133,6 +129,7 @@ class Balance extends \Core\Model
      */
     public static function getExpenses($data)
     {  
+        if (isset($data['zakresDat'])){
 
         if ($data['zakresDat'] === 'currentMonth')
         {
@@ -198,14 +195,14 @@ class Balance extends \Core\Model
             $end_date = $Year. '-12-31';
 
         }
-
-        if ($data['zakresDat'] === 'another')
+    } else {
+        if ($data)
         {
-            View::renderTemplate('Balance/indexmodal.html');
-            exit();           
+            $start_date = $data['start_date'];
+            $end_date = $data['end_date'];           
 
         }
-        
+    }
         try {
             //$db = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8",
             //              $username, $password);
