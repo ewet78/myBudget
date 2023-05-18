@@ -63,10 +63,9 @@
                     <label for="kategoria">Kategoria</label>
                     <select id="kategoria" name="income_category_assigned_to_user_id">
                     
-                        <option value="Salary">Wynagrodzenie</option>
-                        <option value="Interest">Zainteresowania</option>
-                        <option value="Allegro">Sprzedaż na Allegro</option>
-                        <option value="Another">Inne przychody</option>
+                        {% for incomesCategory in incomesCategories %}
+                        <option value="{{ incomesCategory.kategorie_przychodów }}">{{ incomesCategory.kategorie_przychodów }}</option>
+                        {% endfor %}
 
                     </select>
                 </div>

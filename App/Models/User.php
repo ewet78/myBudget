@@ -553,7 +553,7 @@ class User extends \Core\Model
     }
 
 
-    public function getIdOfExpenseCategory($name, $id)
+    public static function getIdOfExpenseCategory($name, $id)
     {
         $sql = 'SELECT id
                 FROM expenses_category_assigned_to_users
@@ -569,15 +569,19 @@ class User extends \Core\Model
 
         $stmt->execute();
 
-        $category_id = $stmt->fetch()->id;
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        return $category_id;
+        if ($result === false || !isset($result['id'])) {
+            return null; // or handle the case when category is not found
+        }
+
+        return $result['id'];
     }
 
 
 
 
-    public function getIdOfPaymentMethod($name, $id)
+    public static function getIdOfPaymentMethod($name, $id)
     {
         $sql = 'SELECT id
                 FROM  payment_methods_assigned_to_users
@@ -600,9 +604,9 @@ class User extends \Core\Model
 
 
      /**
-     * Add a new expense
+     * Add a new income
      * 
-     * @param array $data Data from the add new expense form
+     * @param array $data Data from the add new income form
      * 
      * @return boolean True if the data was updated, false otherwise
      */
@@ -637,7 +641,7 @@ class User extends \Core\Model
 
 
 
-    public function getIdOfIncomeCategory($name, $id)
+    public static function getIdOfIncomeCategory($name, $id)
     {
         $sql = 'SELECT id
                 FROM incomes_category_assigned_to_users
@@ -653,10 +657,39 @@ class User extends \Core\Model
 
         $stmt->execute();
 
-        $category_id = $stmt->fetch()->id;
+        $result = $stmt->fetch();
 
-        return $category_id;
+        if ($result !== false && isset($result->id)) {
+        return $result->id;
+        }
+
+        return null;
     }
 
+
+
+    public static function deleteAccount()
+    {
+        $user_id = Auth::getUser()->id;
+
+        $sql = 'DELETE FROM expenses_category_assigned_to_users
+                WHERE user_id=:id;
+                DELETE FROM  incomes_category_assigned_to_users
+                WHERE user_id=:id;
+                DELETE FROM payment_methods_assigned_to_users
+                WHERE user_id=:id;
+                DELETE FROM incomes
+                WHERE user_id=:id;
+                DELETE FROM expenses
+                WHERE user_id=:id;
+                DELETE FROM users
+                WHERE id=:id';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':id', $user_id, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
     
 }
