@@ -5,6 +5,8 @@ namespace App\Controllers;
 use \Core\View;
 use \App\Auth;
 use \App\Flash;
+use \App\Models\Categories;
+use \App\Models\User;
 
 /**
  * Profile controller
@@ -78,4 +80,94 @@ class Profile extends Authenticated
         }
 
     }
+
+     /**
+     * Show the form for editing all the categories
+     * 
+     * @return void
+     */
+    public function showeditcategoryAction()
+    {
+        $category = new Categories;
+        $categoriesOfIncomes = Categories::getIncomesCategories();
+        $categoriesOfExpenses = Categories::getExpensesCategories();
+
+        View::renderTemplate('Profile/showeditcategory.html', [
+            'incomesCategories' => $categoriesOfIncomes,
+            'expensesCategories' => $categoriesOfExpenses
+        ]);
+    }
+
+      /**
+     * Show the form for editing the chosen categories
+     * 
+     * @return void
+     */
+    public function editincomescategoryAction()
+    {   
+        if(isset($_POST['editButton'])){
+            $index = $_POST['editButton'];
+            $categoryName = $_POST['categoryName'][$index];
+
+            View::renderTemplate('Profile/editincomescategory.html', [
+                'categoryName' => $categoryName, // Pass the category value to the view
+            ]);
+        }
+        else View::renderTemplate('Profile/editincomescategory.html');
+
+    
+    }
+
+        /**
+     * Show the form for editing the chosen categories
+     * 
+     * @return void
+     */
+    public function editexpensescategoryAction()
+    {   
+        if(isset($_POST['editButton'])){
+            $index = $_POST['editButton'];
+            $categoryName = $_POST['categoryName'][$index];
+
+            View::renderTemplate('Profile/editexpensescategory.html', [
+                'categoryName' => $categoryName, // Pass the category value to the view
+            ]);
+        }
+        else View::renderTemplate('Profile/editexpensescategory.html');
+
+    
+    }
+
+    public function editpaymentmethodAction()
+    {
+        if(isset($_POST['editButton'])){
+            $index = $_POST['editButton'];
+            $paymentMethod = $_POST['paymentMethod'][$index];
+
+            View::renderTemplate('Category/editpaymentmethods.html', [
+                'paymentMethod' => $paymentMethod, // Pass the category value to the view
+            ]);
+        }
+        else View::renderTemplate('Category/showeditpaymentmethods.html');
+    }
+
+    
+    public function deleteaccountAction()
+    {
+        View::renderTemplate('Profile/deleteaccount.html');
+    }
+
+    public function deleteaccountconfirmAction()
+    {
+        $user = new User;
+        if (User::deleteAccount()) 
+        {
+            Flash::addMessage('Account deleted');
+            $this->redirect('/');
+        } else View::renderTemplate('Profile/deleteaccount.html');
+
+    }
+
+
+    
 }

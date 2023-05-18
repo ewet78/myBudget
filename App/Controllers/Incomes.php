@@ -5,6 +5,7 @@ namespace App\Controllers;
 use \Core\View;
 use \App\Models\User;
 use \App\Flash;
+use \App\Models\Categories;
 
 /**
  * Expenses controller
@@ -21,8 +22,12 @@ class Incomes extends Authenticated
      * @return void
      */
     public function addAction()
-    {
-        View::renderTemplate('Incomes/add.html');
+    {   
+        $category = new Categories;
+        $categoriesOfIncomes = Categories::getIncomesCategories();
+        View::renderTemplate('Incomes/add.html', [
+            'incomesCategories' => $categoriesOfIncomes
+        ]);
     }
 
     /**

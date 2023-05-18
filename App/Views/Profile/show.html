@@ -39,14 +39,30 @@
 	</nav>
 	
 	<main>
-        <dl class="dl-horizontal">
-            <dt>Name</dt>
-            <dd>{{ user.name }}</dd>
-            <dt>email</dt>
-            <dd>{{ user.email }}</dd>
-        </dl>
-    
-        <a href="/profile/edit">Edit</a>
+        <div id="container4">
+            <h4>Ustawienia kategorii</h4>
+            <a href="/profile/showeditcategory">Edytuj/Dodawaj/Usuwaj</a>
+            <br><br>
+        </div>
+        <div id="container4">
+            <h4>Ustawienia metod płatności</h4>
+            <a href="/category/showeditpaymentmethods">Edytuj/Dodawaj/Usuwaj</a>
+            <br><br>
+        </div>
+        <div id="container4">
+            <h4>Ustawienia danych użytkownika</h4>
+            <dl class="dl-horizontal">
+                <dt>Name</dt>
+                <dd>{{ user.name }}</dd>
+                <dt>email</dt>
+                <dd>{{ user.email }}</dd>
+            </dl>
+        
+            <a href="/profile/edit">Edycja/Zmiana hasła</a>
+        </div>
+        <div id="container4">
+            <a href="/deleteaccount"><h4>Usuń swoje konto</h4></a>
+        </div>
 	</main>
 
     {% for message in flash_messages %}

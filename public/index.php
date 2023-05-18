@@ -64,4 +64,18 @@ $router->add('expenses/add', ['controller' => 'Expenses', 'action' => 'add']);
 
 $router->add('balancesheet', ['controller' => 'BalanceSheet', 'action' => 'index']);
 
+$router->add('profile/editcategory', ['controller' => 'Profile', 'action' => 'editcategory']);
+
+$router->add('deleteincomescategory', ['controller' => 'Category', 'action' => 'deleteincomescategory']);
+$router->add('deleteexpensescategory', ['controller' => 'Category', 'action' => 'deleteexpensescategory']);
+
+$router->add('addincomescategory', ['controller' => 'Category', 'action' => 'addincomescategory'] );
+$router->add('addexpensescategory', ['controller' => 'Category', 'action' => 'addexpensescategory'] );
+
+$router->add('deletepaymentmethod', ['controller' => 'Category', 'action' => 'deletepaymentmethod']);
+
+$router->add('addpaymentmethod', ['controller' => 'Category', 'action' => 'addpaymentmethod']);
+
+$router->add('deleteaccount', ['controller' => 'Profile', 'action' => 'deleteaccount']);
+
 $router->dispatch($_SERVER['QUERY_STRING']);

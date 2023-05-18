@@ -139,6 +139,12 @@ button:hover
 	background-color: #046383;
 }
 
+#buttonEditCategory
+{
+	width: 50px;
+	font-size: 15px;
+}
+
 #button1
 {
 	margin-left: 110px;
@@ -292,4 +298,99 @@ input[type=submit]:hover
 		margin-left: auto;
 		margin-right: auto;
 	}
+}
+
+#flash-message {
+	position: fixed;
+	top: 20px;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 9999;
+	padding: 10px 20px;
+  }
+
+#container4
+{
+	width: 60%;
+	background-color: #579BB1;
+	color: white;
+	border-radius: 10px;
+	font-size: 20px;
+	padding: 10px;
+	box-sizing: border-box;
+	outline: none;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	margin-left: auto;
+    margin-right: auto;
+		
+}
+
+#container4 a {
+    color: white;
+}
+  
+#editCategory
+{
+	display: inline-block;
+	vertical-align: top;
+	width: 50%;
+	background-color: #579BB1;
+	color: white;
+	border-radius: 10px;
+	font-size: 20px;
+	padding: 10px;
+	box-sizing: border-box;
+	outline: none;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	margin-left: auto;
+    margin-right: auto; 
+
+}
+
+#editCategory a
+{
+	color: white;
+	font-size: 15px;
+	letter-spacing: 2px;
+
+}
+
+#editCategory p {
+    text-align: left;
+	margin-left: 50px;
+	
+}
+
+#paymentMethods
+{
+	display: inline-block;
+	vertical-align: top;
+	width: 50%;
+	background-color: #579BB1;
+	color: white;
+	border-radius: 10px;
+	font-size: 20px;
+	padding: 10px;
+	box-sizing: border-box;
+	outline: none;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	margin-left: auto;
+    margin-right: auto; 
+}
+
+#paymentMethods a
+{
+	color: white;
+	font-size: 15px;
+	letter-spacing: 2px;
+
+}
+
+#paymentMethods p {
+    text-align: left;
+	margin-left: 50px;
+	
 }

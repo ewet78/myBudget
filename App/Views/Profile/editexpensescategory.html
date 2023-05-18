@@ -39,65 +39,46 @@
 	</nav>
 	
 	<main>
-        <div id="container2">
-						
-            <form action="/expenses/new" method="post">
-                <div id="wydatek">
-                    <label>Kwota   <input type="number" name="amount" placeholder="0,0" step="0.01" min="0.01" required></label>
-                </div>
-                <div id="wydatek">
-                    <label>Data   <input type="date" id="date_of_expense" name="date_of_expense" required></label>
+        {% if user.errors is not empty %}
+        <p>Errors:</p>
+        <ul>
+            {% for error in user.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 
-                    <script>
-                        // Get today's date
-                        var today = new Date();
-                      
-                        // Format the date as YYYY-MM-DD
-                        var formattedDate = today.toISOString().split('T')[0];
-                      
-                        // Set the value of the input element
-                        document.getElementById('date_of_expense').value = formattedDate;
-                    </script>
-
-                </div>
-                <div id="wydatek">
-                    <fieldset>
-                        
-                        <legend> Sposób płatności </legend>
-                        
-                        {% for paymentMethod in paymentMethods %}
-                        <div><label><input type="radio" name="payment_method_assigned_to_user_id" value="{{ paymentMethod.metody_płatności }}" {% if loop.index == 1 %}checked{% endif %}>{{ paymentMethod.metody_płatności }}</label></div>
-                        {% endfor %}
-                        
-                    </fieldset>
-                </div>
-                <div id="wydatek">
-                    <label for="kategoria">Kategoria</label>
-                    <select id="kategoria" name="expense_category_assigned_to_user_id">
-                    
-                        {% for expensesCategory in expensesCategories %}
-                        <option value="{{ expensesCategory.kategorie_wydatków }}">{{ expensesCategory.kategorie_wydatków }}</option>
-                        {% endfor %}
-                        
-                    </select>
-                </div>
-                <div id="wydatek">
-                    <div><label for="komentarz">Komentarz (opcjonalnie):</label></div>
-                    <textarea name="expense_comment" id="komentarz" rows="4" cols="34"></textarea>
-                </div>
-                <div id="wydatekSubmit">
-                    <button id="button2"><a href="/home" id="button2anuluj">Anuluj</a></button>
-                    <button id="button1" type="submit">Dodaj</button>
-                </div>
-            </form>
-    </div>
+    <form id="formProfile" action="/category/updateexpensescategory" method="POST">
+        <div class="form-group">
+            <label for="inputName">Nazwa kategorii</label>
+            <input type="hidden" name="oldCategoryName" value="{{ categoryName }}">
+            <input id="inputName" name="nameOfCategory" placeholder="NameOfCategory" value="{{ categoryName }}" required class="form-control"/>
+        </div>
+        <a href="/profile/showeditcategory">Cancel</a>
+        <button type="submit">Save</button>
+    </form>
 	</main>
 
     {% for message in flash_messages %}
-    <div class="alert alert-{{ message.type }}">
+    <div id="flash-message" class="alert alert-{{ message.type }}">
         {{ message.body }}
     </div>
     {% endfor %}
+
+    <script>
+        function removeFlashMessage() {
+            var flashMessage = document.getElementById('flash-message');
+            if (flashMessage) {
+            flashMessage.remove();
+            }
+        }
+        
+        // Specify the duration in milliseconds (e.g., 5000 for 5 seconds)
+        var duration = 2500;
+        
+        // Set a timer to remove the flash message after the specified duration
+        setTimeout(removeFlashMessage, duration);
+    </script>
 
     <script
     src="https://code.jquery.com/jquery-3.6.4.min.js"

@@ -5,6 +5,7 @@ namespace App\Controllers;
 use \Core\View;
 use \App\Models\User;
 use \App\Flash;
+use \App\Models\Categories;
 
 /**
  * Expenses controller
@@ -22,7 +23,13 @@ class Expenses extends Authenticated
      */
     public function addAction()
     {
-        View::renderTemplate('Expenses/add.html');
+        $category = new Categories;
+        $categoriesOfExpenses = Categories::getExpensesCategories();
+        $paymentMethods = Categories::getPaymentMethods();
+        View::renderTemplate('Expenses/add.html', [
+            'expensesCategories' => $categoriesOfExpenses,
+            'paymentMethods' => $paymentMethods
+        ]);
     }
 
     /**
