@@ -9,7 +9,7 @@ use \App\Auth;
 use \Core\View;
 
 /**
- * Example user model
+ * User model
  *
  * PHP version 8.2
  */

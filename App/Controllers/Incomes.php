@@ -8,7 +8,7 @@ use \App\Flash;
 use \App\Models\Categories;
 
 /**
- * Expenses controller
+ * Incomes controller
  *
  * PHP version 8.2
  */

@@ -62,11 +62,37 @@ class Category extends \Core\Controller
     {
         $categoryName = $_GET['categoryName'];
         $category = new Categories;
+        $incomesAssignedToCategory = Categories::checkIfTheCategoryHasIncome($categoryName);
+        if(!empty(Categories::checkIfTheCategoryHasIncome($categoryName))){
+            View::renderTemplate('Category/deleteincomescategory.html', [
+                'incomesAssignedToCategory' => $incomesAssignedToCategory,
+                'categoryName' => $categoryName,
+            ]);
+        } else {
         if (Categories::deleteIncomesCategory($categoryName)) {
             Flash::addMessage('Category deleted');
             $this->redirect('/profile/showeditcategory');
         }
         else $this->redirect('/profile/editcategory');
+    }
+    }
+
+    /**
+     * Executing delete the incomes category
+     *
+     * @return void
+     */
+    public function executedeleteincomescategoryAction()
+    {
+        $categoryName = $_POST['categoryName'];
+        $category = new Categories;
+        
+        if (Categories::deleteIncomesCategory($categoryName)) {
+            Flash::addMessage('Category deleted');
+            $this->redirect('/profile/showeditcategory');
+        }
+        else $this->redirect('/profile/editcategory');
+    
     }
 
      /**
@@ -78,11 +104,37 @@ class Category extends \Core\Controller
     {
         $categoryName = $_GET['categoryName'];
         $category = new Categories;
+        $expensesAssignedToCategory = Categories::checkIfTheCategoryHasExpense($categoryName);
+        if (!empty(Categories::checkIfTheCategoryHasExpense($categoryName))) {
+            View::renderTemplate('Category/deleteexpensescategory.html', [
+                'expensesAssignedToCategory' => $expensesAssignedToCategory,
+                'categoryName' => $categoryName,
+            ]);
+        } else {
         if (Categories::deleteExpensesCategory($categoryName)) {
             Flash::addMessage('Category deleted');
             $this->redirect('/profile/showeditcategory');
         }
         else $this->redirect('/profile/editcategory');
+    }
+    }
+
+       /**
+     * Executing delete the expenses category
+     *
+     * @return void
+     */
+    public function executedeleteexpensescategoryAction()
+    {
+        $categoryName = $_POST['categoryName'];
+        $category = new Categories;
+        
+        if (Categories::deleteExpensesCategory($categoryName)) {
+            Flash::addMessage('Category deleted');
+            $this->redirect('/profile/showeditcategory');
+        }
+        else $this->redirect('/profile/editcategory');
+    
     }
 
      /**
@@ -182,11 +234,37 @@ class Category extends \Core\Controller
     {
         $paymentMethodName = $_GET['paymentMethod'];
         $category = new Categories;
+        $expensesAssignedToPaymentMethod = Categories::checkIfThePaymentMethodHasExpense($paymentMethodName);
+        if (!empty(Categories::checkIfThePaymentMethodHasExpense($paymentMethodName))) {
+            View::renderTemplate('Category/deletepaymentmethodname.html', [
+                'expensesAssignedToPaymentMethod' => $expensesAssignedToPaymentMethod,
+                'paymentMethodName' => $paymentMethodName,
+            ]);
+        } else {
         if (Categories::deletePaymentMethod($paymentMethodName)) {
             Flash::addMessage('Payment method deleted');
             $this->redirect('/category/showeditpaymentmethods');
         }
         else $this->redirect('/category/editpaymentmethod');
+    }
+    }
+
+    /**
+     * Executing delete the payment method
+     *
+     * @return void
+     */
+    public function executedeletepaymentmethodAction()
+    {
+        $paymentMethodName = $_POST['paymentMethodName'];
+        $category = new Categories;
+        
+        if (Categories::deletePaymentMethod($paymentMethodName)) {
+            Flash::addMessage('Payment method deleted');
+            $this->redirect('/category/showeditpaymentmethods');
+        }
+        else $this->redirect('/category/editpaymentmethod');
+    
     }
     
 

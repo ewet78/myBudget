@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Menu główne{% endblock %}</title>
+    <title>{% block title %}Main menu{% endblock %}</title>
     <meta name="description" content="Menu główne w aplikacji do prowadzenia budżetu osobistego " />
 	<meta name="keywords" content="menu, budżet osobisty, użytkownik" />
 	<meta http-equiv="X_UA_Compatible" content="IE=edge,chrome=1" />
@@ -29,15 +29,21 @@
 
 	<nav id="topnav">
 		<ul class="menu">
-			<li><a href="/home"><i class="fa-solid fa-house"></i>   Strona główna</a></li>
-			<li><a href="/incomes/add"><i class="fa-solid fa-hand-holding-dollar"></i>   Dodaj przychód</a></li>
-			<li><a href="/expenses/add"><i class="fa-solid fa-cart-shopping"></i>   Dodaj wydatek</a></li>
-			<li><a href="/balancesheet"><i class="fa-solid fa-scale-unbalanced-flip"></i>   Przeglądaj bilans</a></li>
-			<li><a href="/profile/show"><i class="fa-solid fa-gear"></i>   Ustawienia</a></li>
-			<li><a href="/logout"><i class="fa-sharp fa-solid fa-right-from-bracket"></i>   Wyloguj się</a></li>
+			<li><a href="/home" id="link-home"><i class="fa-solid fa-house"></i>   Home</a></li>
+			<li><a href="/incomes/add" id="link-incomes"><i class="fa-solid fa-hand-holding-dollar"></i>   Add income</a></li>
+			<li><a href="/expenses/add" id="link-expenses"><i class="fa-solid fa-cart-shopping"></i>   Add expense</a></li>
+			<li><a href="/balancesheet" id="link-balance"><i class="fa-solid fa-scale-unbalanced-flip"></i>   View balance</a></li>
+			<li><a href="/profile/show" id="link-settings"><i class="fa-solid fa-gear"></i>   Settings</a></li><style> #link-settings{color:#F8F4EA ;}</style>
+			<li><a href="/logout" id="link-logout"><i class="fa-sharp fa-solid fa-right-from-bracket"></i>   Log out</a></li>
 		</ul>
 	</nav>
 	
+    {% for message in flash_messages %}
+    <div id="flash-message" class="alert alert-{{ message.type }}">
+        {{ message.body }}
+    </div>
+    {% endfor %}
+
 	<main>
         {% if user.errors is not empty %}
         <p>Errors:</p>
@@ -50,7 +56,7 @@
 
     <form id="formProfile" action="/category/updateaddedpaymentmethod" method="POST">
         <div class="form-group">
-            <label for="inputName">Nazwa metody płatności</label>
+            <label for="inputName">Payment method name</label>
             <input id="inputName" name="nameOfPaymentMethod" placeholder="Name of payment method" required class="form-control"/>
         </div>
         <a href="/category/showeditpaymentmethods">Cancel</a>
@@ -58,11 +64,7 @@
     </form>
 	</main>
 
-    {% for message in flash_messages %}
-    <div class="alert alert-{{ message.type }}">
-        {{ message.body }}
-    </div>
-    {% endfor %}
+    <script src="/js/flash.js"></script>
 
     <script
     src="https://code.jquery.com/jquery-3.6.4.min.js"

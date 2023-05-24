@@ -37,7 +37,7 @@
 			<li><a href="/logout" id="link-logout"><i class="fa-sharp fa-solid fa-right-from-bracket"></i>   Log out</a></li>
 		</ul>
 	</nav>
-
+	
     {% for message in flash_messages %}
     <div id="flash-message" class="alert alert-{{ message.type }}">
         {{ message.body }}
@@ -54,14 +54,16 @@
         </ul>
     {% endif %}
 
-    <form id="formProfile" action="/category/updateincomescategory" method="POST">
-        <div class="form-group">
-            <label for="inputName">Category name</label>
-            <input type="hidden" name="oldCategoryName" value="{{ categoryName }}">
-            <input id="inputName" name="nameOfCategory" placeholder="NameOfCategory" value="{{ categoryName }}" required class="form-control"/>
-        </div>
+    <form id="formDeleteExpensesCategory" action="/category/executedeleteexpensescategory" method="POST">
+        <br>
+        <p>In database exist expenses which have this category. Do you still want to delete this category? It will also cause deleting all that expenses.</p>
+        {% for expenseAssignedToCategory in expensesAssignedToCategory %}
+        <p>Category: {{ categoryName }}</p>
+        <p>Expense amount: {{ expenseAssignedToCategory.amount_of_expense }}, date of expense: {{ expenseAssignedToCategory.date_of_expense }}</p>
+        <input type="hidden" name="categoryName" value="{{ categoryName }}">
+        {% endfor %}
         <a href="/profile/showeditcategory">Cancel</a>
-        <button type="submit">Save</button>
+        <button type="submit">Delete</button>
     </form>
 	</main>
 

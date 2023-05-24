@@ -2,12 +2,19 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Menu główne{% endblock %}</title>
+    <title>{% block title %}Main menu{% endblock %}</title>
     <meta name="description" content="Menu główne w aplikacji do prowadzenia budżetu osobistego " />
 	<meta name="keywords" content="menu, budżet osobisty, użytkownik" />
 	<meta http-equiv="X_UA_Compatible" content="IE=edge,chrome=1" />
 
+    <script
+	src="https://code.jquery.com/jquery-3.6.4.min.js"
+	integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+	crossorigin="anonymous"></script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+
     <link rel="stylesheet" href="/css/styles.css" />
 
     <script src="https://kit.fontawesome.com/26d8768c67.js" crossorigin="anonymous"></script>
@@ -29,15 +36,21 @@
 
 	<nav id="topnav">
 		<ul class="menu">
-			<li><a href="/home"><i class="fa-solid fa-house"></i>   Strona główna</a></li>
-			<li><a href="/incomes/add"><i class="fa-solid fa-hand-holding-dollar"></i>   Dodaj przychód</a></li>
-			<li><a href="/expenses/add"><i class="fa-solid fa-cart-shopping"></i>   Dodaj wydatek</a></li>
-			<li><a href="/balancesheet"><i class="fa-solid fa-scale-unbalanced-flip"></i>   Przeglądaj bilans</a></li>
-			<li><a href="/profile/show"><i class="fa-solid fa-gear"></i>   Ustawienia</a></li>
-			<li><a href="/logout"><i class="fa-sharp fa-solid fa-right-from-bracket"></i>   Wyloguj się</a></li>
+			<li><a href="/home" id="link-home"><i class="fa-solid fa-house"></i>   Home</a></li>
+			<li><a href="/incomes/add" id="link-incomes"><i class="fa-solid fa-hand-holding-dollar"></i>   Add income</a></li>
+			<li><a href="/expenses/add" id="link-expenses"><i class="fa-solid fa-cart-shopping"></i>   Add expense</a></li>
+			<li><a href="/balancesheet" id="link-balance"><i class="fa-solid fa-scale-unbalanced-flip"></i>   View balance</a></li>
+			<li><a href="/profile/show" id="link-settings"><i class="fa-solid fa-gear"></i>   Settings</a></li><style> #link-settings{color:#F8F4EA ;}</style>
+			<li><a href="/logout" id="link-logout"><i class="fa-sharp fa-solid fa-right-from-bracket"></i>   Log out</a></li>
 		</ul>
 	</nav>
-	
+
+    {% for message in flash_messages %}
+    <div id="flash-message" class="alert alert-{{ message.type }}">
+        {{ message.body }}
+    </div>
+    {% endfor %}
+
 	<main>
         {% if user.errors is not empty %}
         <p>Errors:</p>
@@ -47,65 +60,120 @@
             {% endfor %}
         </ul>
     {% endif %}
-<div id="editCategory">
+<div id="editIncomeCategory">
     <form action="editincomescategory" method="POST">
         <div class="form-group">
-            <label for="inputName">Kategorie przychodów</label>
+            <label for="inputName">Incomes categories</label>
             {% for index, incomesCategory in incomesCategories %}
             <p>
                 {{ incomesCategory.kategorie_przychodów }}
                 <input type="hidden" name="categoryName[{{ loop.index }}]" value="{{ incomesCategory.kategorie_przychodów }}">
                 <button id="buttonEditCategory" name="editButton" value="{{ loop.index }}" type="submit">Edit</button>|
-                <a href="/deleteincomescategory?categoryName={{ incomesCategory.kategorie_przychodów }}">Delete</a>
+                <a href="/deleteincomescategory?categoryName={{ incomesCategory.kategorie_przychodów }}"id="deleteIncomeLink{{ loop.index }}" data-category="{{ incomesCategory.kategorie_przychodów }}">Delete</a>
             </p>
             {% endfor %}
             <a href="/addincomescategory">Add category</a>
         </div>
     </form>   
 </div> 
-<div id="editCategory">
+<div id="editExpenseCategory">
     <form action="editexpensescategory" method="POST">
         <div class="form-group">
-            <label for="inputName">Kategorie wydatków</label>
+            <label for="inputName">Expenses categories</label>
             {% for index, expensesCategory in expensesCategories %}
             <p>
                 {{ expensesCategory.kategorie_wydatków }}
                 <input type="hidden" name="categoryName[{{ loop.index }}]" value="{{ expensesCategory.kategorie_wydatków }}">
                     <button id="buttonEditCategory" name="editButton" value="{{ loop.index }}" type="submit">Edit</button>|
-                    <a href="/deleteexpensescategory?categoryName={{ expensesCategory.kategorie_wydatków }}">Delete</a>
+                    <a href="/deleteexpensescategory?categoryName={{ expensesCategory.kategorie_wydatków }}" id="deleteExpenseLink{{ loop.index }}" data-category="{{ expensesCategory.kategorie_wydatków }}">Delete</a>
             </p>
             {% endfor %}
             <a href="/addexpensescategory">Add category</a>
         </div>
     </form> 
 </div>
+               <!-- Modal -->
+          <div class="modal fade" id="deleteIncomeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLongTitle">Confirmation</h5>
+				<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				</div>
+				<div class="modal-body">
+					<p>Are you sure to delete the income category "<span id="incomeCategoryNamePlaceholder"></span>"?</p>
+				</div>
+				<div class="modal-footer">
+				<button type="button" class="button" data-bs-dismiss="modal">Close</button>
+				<button id="deleteIncomeButton" type="submit" class="button">Delete</button>
+				</div>
+			</div>
+			</div>
+		</div>
+
+
+          <!-- Modal -->
+          <div class="modal fade" id="deleteExpenseModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLongTitle">Confirmation</h5>
+				<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				</div>
+				<div class="modal-body">
+					<p>Are you sure to delete the expense category "<span id="expenseCategoryNamePlaceholder"></span>"?</p>
+				</div>
+				<div class="modal-footer">
+				<button type="button" class="button" data-bs-dismiss="modal">Close</button>
+				<button id="deleteExpenseButton" type="submit" class="button">Delete</button>
+				</div>
+			</div>
+			</div>
+		</div>
+      
 
 	</main>
 
-    {% for message in flash_messages %}
-    <div id="flash-message" class="alert alert-{{ message.type }}">
-        {{ message.body }}
-    </div>
-    {% endfor %}
+   
+    <script src="/js/flash.js"></script>
+    
     <script>
-        function removeFlashMessage() {
-            var flashMessage = document.getElementById('flash-message');
-            if (flashMessage) {
-            flashMessage.remove();
-            }
-        }
-        
-        // Specify the duration in milliseconds (e.g., 5000 for 5 seconds)
-        var duration = 2500;
-        
-        // Set a timer to remove the flash message after the specified duration
-        setTimeout(removeFlashMessage, duration);
-    </script> 
-
-    <script
-    src="https://code.jquery.com/jquery-3.6.4.min.js"
-    integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
-    crossorigin="anonymous"></script>
+        // Get a reference to the delete links for income and expense categories
+        var deleteIncomeLinks = document.querySelectorAll('#editIncomeCategory a[id^="deleteIncomeLink"]');
+        var deleteExpenseLinks = document.querySelectorAll('#editExpenseCategory a[id^="deleteExpenseLink"]');
+    
+        // Add a click event listener to each delete link for income categories
+        deleteIncomeLinks.forEach(function (link) {
+            link.addEventListener('click', function (event) {
+                event.preventDefault();
+                var categoryName = this.getAttribute('data-category');
+                var deleteLink = this.getAttribute('href');
+                $('#deleteIncomeModal').modal('show');
+                document.getElementById('incomeCategoryNamePlaceholder').textContent = categoryName;
+                document.getElementById('deleteIncomeButton').onclick = function() {
+                    window.location.href = deleteLink;
+                };
+            });
+        });
+    
+        // Add a click event listener to each delete link for expense categories
+        deleteExpenseLinks.forEach(function (link) {
+            link.addEventListener('click', function (event) {
+                event.preventDefault();
+                var categoryName = this.getAttribute('data-category');
+                var deleteLink = this.getAttribute('href');
+                $('#deleteExpenseModal').modal('show');
+                document.getElementById('expenseCategoryNamePlaceholder').textContent = categoryName;
+                document.getElementById('deleteExpenseButton').onclick = function() {
+                    window.location.href = deleteLink;
+                };
+            });
+        });
+    </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/additional-methods.min.js" integrity="sha512-6S5LYNn3ZJCIm0f9L6BCerqFlQ4f5MwNKq+EthDXabtaJvg3TuFLhpno9pcm+5Ynm6jdA9xfpQoMz2fcjVMk9g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

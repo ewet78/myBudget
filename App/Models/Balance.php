@@ -7,9 +7,9 @@ use App\Auth;
 use Core\View;
 
 /**
- * Post model
+ * Balance model
  *
- * PHP version 7.4
+ * PHP version 8.2
  */
 class Balance extends \Core\Model
 {
@@ -91,8 +91,7 @@ class Balance extends \Core\Model
         $end_date = $data['end_date']; 
     }
         try {
-            //$db = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8",
-            //              $username, $password);
+    
             $user_id = Auth::getUser()->id;
 
             $db = static::getDB();
@@ -204,8 +203,7 @@ class Balance extends \Core\Model
         }
     }
         try {
-            //$db = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8",
-            //              $username, $password);
+           
             $user_id = Auth::getUser()->id;
 
             $db = static::getDB();

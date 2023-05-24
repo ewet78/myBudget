@@ -29,11 +29,17 @@
 
 	<nav id="topnav">
 		<ul class="menu">
-			<li><a href="/login"><i class="fa-sharp fa-solid fa-right-from-bracket"></i>  Zaloguj się</a></li>	
-			<li><a href="/signup/new"><i class="fa-sharp fa-solid fa-user-plus"></i>  Zarejestruj się</a></li>
+			<li><a href="/login"><i class="fa-sharp fa-solid fa-right-from-bracket"></i>  Log in</a></li>	
+			<li><a href="/signup/new"><i class="fa-sharp fa-solid fa-user-plus"></i>  Sign up</a></li>
 		</ul>
 	</nav>
-	
+
+    {% for message in flash_messages %}
+    <div id="flash-message" class="alert alert-{{ message.type }}">
+        {{ message.body }}
+    </div>
+    {% endfor %}
+
 	<main>
 
         <p>Success! Thank you for signing up.</p>
@@ -41,11 +47,7 @@
         <p>Please check your email to activate your account.</p>
 	</main>
 
-    {% for message in flash_messages %}
-    <div class="alert alert-{{ message.type }}">
-        {{ message.body }}
-    </div>
-    {% endfor %}
+    <script src="/js/flash.js"></script>
 
     <script
     src="https://code.jquery.com/jquery-3.6.4.min.js"
