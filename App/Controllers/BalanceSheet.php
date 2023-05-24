@@ -10,7 +10,7 @@ use App\Models\Balance;
  *
  * PHP version 8.2
  */
-class BalanceSheet extends \Core\Controller
+class BalanceSheet extends Authenticated
 {
 
     /**
