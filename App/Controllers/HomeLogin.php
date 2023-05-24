@@ -33,7 +33,7 @@ class HomeLogin extends Authenticated
      */
     protected function after()
     {
-        //echo " (after)";
+        
     }
 
     /**
@@ -43,12 +43,6 @@ class HomeLogin extends Authenticated
      */
     public function indexAction()
     {
-        /*
-        View::render('Home/index.php', [
-            'name'    => 'Dave',
-            'colours' => ['red', 'green', 'blue']
-        ]);
-        */
         
         View::renderTemplate('Homelogin/index.html', [
             'user' => $this->user
