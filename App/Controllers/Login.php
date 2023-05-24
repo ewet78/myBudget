@@ -43,7 +43,7 @@ class Login extends \Core\Controller
 
             //$this->redirect(Auth::getReturnToPage());
 
-            View::renderTemplate('Zalogowany/index.html');
+            View::renderTemplate('Homelogin/index.html');
         } else {
 
             Flash::addMessage('Login unsuccessful, please try again', Flash::WARNING);

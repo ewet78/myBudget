@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Menu główne{% endblock %}</title>
+    <title>{% block title %}Main menu{% endblock %}</title>
     <meta name="description" content="Menu główne w aplikacji do prowadzenia budżetu osobistego " />
 	<meta name="keywords" content="menu, budżet osobisty, użytkownik" />
 	<meta http-equiv="X_UA_Compatible" content="IE=edge,chrome=1" />
@@ -29,11 +29,17 @@
 
 	<nav id="topnav">
 		<ul class="menu">
-			<li><a href="/login"><i class="fa-sharp fa-solid fa-right-from-bracket"></i>  Zaloguj się</a></li>	
-			<li><a href="/signup/new"><i class="fa-sharp fa-solid fa-right-from-bracket"></i>  Zarejestruj się</a></li>
+			<li><a href="/login"><i class="fa-sharp fa-solid fa-right-from-bracket"></i>  Log in</a></li>	
+			<li><a href="/signup/new"><i class="fa-sharp fa-solid fa-right-from-bracket"></i>  Sign up</a></li>
 		</ul>
 	</nav>
 	
+    {% for message in flash_messages %}
+    <div id="flash-message" class="alert alert-{{ message.type }}">
+        {{ message.body }}
+    </div>
+    {% endfor %}
+
 	<main>
         <form method="post" action="/password/request-reset" id="formResetPassword">
             <diV class="form-group">
@@ -45,11 +51,7 @@
         </form>
 	</main>
 
-    {% for message in flash_messages %}
-    <div class="alert alert-{{ message.type }}">
-        {{ message.body }}
-    </div>
-    {% endfor %}
+    <script src="/js/flash.js"></script>
 
     <script
     src="https://code.jquery.com/jquery-3.6.4.min.js"

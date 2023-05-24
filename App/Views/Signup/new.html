@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Rejestracja{% endblock %}</title>
+    <title>{% block title %}Registration{% endblock %}</title>
     <meta name="description" content="Menu główne w aplikacji do prowadzenia budżetu osobistego " />
 	<meta name="keywords" content="menu, budżet osobisty, użytkownik" />
 	<meta http-equiv="X_UA_Compatible" content="IE=edge,chrome=1" />
@@ -73,7 +73,7 @@
 
 	<nav id="topnav">
 		<ul class="menu">
-			<li><a href="">  Rejestracja</a></li>
+			<li><a href="">  Registration</a></li>
 		</ul>
 	</nav>
 	
@@ -86,6 +86,12 @@
             {% endfor %}
         </ul>
     {% endif %}
+
+    {% for message in flash_messages %}
+    <div id="flash-message" class="alert alert-{{ message.type }}">
+        {{ message.body }}
+    </div>
+    {% endfor %}
 
     <form method="post" action="/signup/create" class="rejestracja" id="formSignup">
         <div class="form-group">
@@ -106,11 +112,7 @@
     </form>
 	</main>
 
-    {% for message in flash_messages %}
-    <div class="alert alert-{{ message.type }}">
-        {{ message.body }}
-    </div>
-    {% endfor %}
+    <script src="/js/flash.js"></script>
 
     <script
     src="https://code.jquery.com/jquery-3.6.4.min.js"

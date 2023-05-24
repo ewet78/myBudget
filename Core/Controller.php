@@ -8,7 +8,7 @@ use \App\Flash;
 /**
  * Base controller
  *
- * PHP version 5.4
+ * PHP version 8.2
  */
 abstract class Controller
 {

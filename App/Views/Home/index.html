@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Menu główne{% endblock %}</title>
+    <title>{% block title %}Main menu{% endblock %}</title>
     <meta name="description" content="Menu główne w aplikacji do prowadzenia budżetu osobistego " />
 	<meta name="keywords" content="menu, budżet osobisty, użytkownik" />
 	<meta http-equiv="X_UA_Compatible" content="IE=edge,chrome=1" />
@@ -29,11 +29,15 @@
 
 	<nav id="topnav">
 		<ul class="menu">
-			<li><a href="/login"><i class="fa-sharp fa-solid fa-right-from-bracket"></i>  Zaloguj się</a></li>	
-			<li><a href="/signup/new"><i class="fa-sharp fa-solid fa-user-plus"></i>  Zarejestruj się</a></li>
+			<li><a href="/login"><i class="fa-sharp fa-solid fa-right-from-bracket"></i>  Log in</a></li>	
+			<li><a href="/signup/new"><i class="fa-sharp fa-solid fa-user-plus"></i>  Sign up</a></li>
 		</ul>
 	</nav>
-	
+	{% for message in flash_messages %}
+    <div id="flash-message" class="alert alert-{{ message.type }}">
+        {{ message.body }}
+    </div>
+    {% endfor %}
 	<main>
 		<div id="container">
 			<div class="row">
@@ -41,20 +45,16 @@
 				<img class="main-image" src="http://localhost/img/main-image.jpg">
 				</div>
 				<div class="cytat col-lg-6">
-					<p><em>„Puste kieszenie nigdy nie powstrzymały nikogo przed podjęciem działania. Mogą to zrobić tylko puste głowy i puste serca”</em> – Norman Vincent Peale</p>
-					<p class="powitanie">Witaj w aplikacji do prowadzenia bilansu budżetu osobistego. Wprowadzaj wydatki oraz przychody, edytuj, usuwaj, dodawaj własne kategorie.
-                        Sprawdzaj na bieżąco bilans z wybranego okresu czasu. Miej kontrolę nad swymi pieniędzmi.
+					<p><em>„Empty pockets never held anyone back. Only empty heads and empty hearts can do that.”</em><br> – Norman Vincent Peale</p>
+					<p class="powitanie">
+						Welcome to the personal budget balance app. Enter expenses and incomes, edit, delete, add your own categories. Check the balance from the selected period of time on an ongoing basis. Take control of your money.
                     </p>
 				</div>
 			</div>
 		</div>
 	</main>
 
-    {% for message in flash_messages %}
-    <div class="alert alert-{{ message.type }}">
-        {{ message.body }}
-    </div>
-    {% endfor %}
+	<script src="/js/flash.js"></script>
 
     <script
     src="https://code.jquery.com/jquery-3.6.4.min.js"

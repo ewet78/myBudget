@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 /**
- * Authenticatedf base controller
+ * Authenticated base controller
  * 
  * PHP version 8.2
  */

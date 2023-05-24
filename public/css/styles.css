@@ -26,7 +26,7 @@ h1 {
 }
 
 #topnav {
-	background-color: #E1D7C6;
+	background-color: #E1D7C6 !important;
 	text-align: center;
 }
 
@@ -58,7 +58,7 @@ h1 {
 }
 
 .menu a:hover {
-	color: #F8F4EA;
+	color: #F8F4EA !important;
 }
 
 .main-image {
@@ -330,7 +330,7 @@ input[type=submit]:hover
     color: white;
 }
   
-#editCategory
+#editIncomeCategory, #editExpenseCategory
 {
 	display: inline-block;
 	vertical-align: top;
@@ -349,7 +349,7 @@ input[type=submit]:hover
 
 }
 
-#editCategory a
+#editIncomeCategory a, #editExpenseCategory a
 {
 	color: white;
 	font-size: 15px;
@@ -357,7 +357,8 @@ input[type=submit]:hover
 
 }
 
-#editCategory p {
+#editIncomeCategory p, #editExpenseCategory p
+{
     text-align: left;
 	margin-left: 50px;
 	
@@ -393,4 +394,10 @@ input[type=submit]:hover
     text-align: left;
 	margin-left: 50px;
 	
+}
+
+.active-link 
+{
+	color: #F8F4EA !important;
+	text-decoration: none;
 }

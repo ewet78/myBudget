@@ -50,7 +50,7 @@ class HomeLogin extends Authenticated
         ]);
         */
         
-        View::renderTemplate('Zalogowany/index.html', [
+        View::renderTemplate('Homelogin/index.html', [
             'user' => $this->user
         ]);
     }

@@ -29,43 +29,37 @@
 
 	<nav id="topnav">
 		<ul class="menu">
-			<li><a href="/home" id="link-home"><i class="fa-solid fa-house"></i>   Home</a></li>
+			<li><a href="/home" id="link-home"><i class="fa-solid fa-house"></i>   Home</a></li><style> #link-home{color:#F8F4EA ;}</style>
 			<li><a href="/incomes/add" id="link-incomes"><i class="fa-solid fa-hand-holding-dollar"></i>   Add income</a></li>
 			<li><a href="/expenses/add" id="link-expenses"><i class="fa-solid fa-cart-shopping"></i>   Add expense</a></li>
 			<li><a href="/balancesheet" id="link-balance"><i class="fa-solid fa-scale-unbalanced-flip"></i>   View balance</a></li>
-			<li><a href="/profile/show" id="link-settings"><i class="fa-solid fa-gear"></i>   Settings</a></li><style> #link-settings{color:#F8F4EA ;}</style>
+			<li><a href="/profile/show" id="link-settings"><i class="fa-solid fa-gear"></i>   Settings</a></li>
 			<li><a href="/logout" id="link-logout"><i class="fa-sharp fa-solid fa-right-from-bracket"></i>   Log out</a></li>
 		</ul>
 	</nav>
 
-    {% for message in flash_messages %}
+	{% for message in flash_messages %}
     <div id="flash-message" class="alert alert-{{ message.type }}">
         {{ message.body }}
     </div>
     {% endfor %}
 
 	<main>
-        {% if user.errors is not empty %}
-        <p>Errors:</p>
-        <ul>
-            {% for error in user.errors %}
-                <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-
-    <form id="formProfile" action="/category/updateincomescategory" method="POST">
-        <div class="form-group">
-            <label for="inputName">Category name</label>
-            <input type="hidden" name="oldCategoryName" value="{{ categoryName }}">
-            <input id="inputName" name="nameOfCategory" placeholder="NameOfCategory" value="{{ categoryName }}" required class="form-control"/>
-        </div>
-        <a href="/profile/showeditcategory">Cancel</a>
-        <button type="submit">Save</button>
-    </form>
+		<div id="container">
+			<div class="row">
+				<div class="main-image col-lg-6">
+				<img class="main-image" src="http://localhost/img/main-image.jpg">
+				</div>
+				<div class="cytat col-lg-6">
+					<p><em>„Empty pockets never held anyone back. Only empty heads and empty hearts can do that.”</em><br> – Norman Vincent Peale</p>
+					<p class="powitanie">Hello {{ current_user.name }}!
+                    </p>
+				</div>
+			</div>
+		</div>
 	</main>
 
-    <script src="/js/flash.js"></script>
+	<script src="/js/flash.js"></script>
 
     <script
     src="https://code.jquery.com/jquery-3.6.4.min.js"

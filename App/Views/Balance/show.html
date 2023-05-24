@@ -1,12 +1,8 @@
-<?php
-	$results = array();
-?>
-
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Menu główne{% endblock %}</title>
+    <title>{% block title %}Main menu{% endblock %}</title>
     <meta name="description" content="Menu główne w aplikacji do prowadzenia budżetu osobistego " />
 	<meta name="keywords" content="menu, budżet osobisty, użytkownik" />
 	<meta http-equiv="X_UA_Compatible" content="IE=edge,chrome=1" />
@@ -33,18 +29,24 @@
 
 	<nav id="topnav">
 		<ul class="menu">
-			<li><a href="/home"><i class="fa-solid fa-house"></i>   Strona główna</a></li>
-			<li><a href="/incomes/add"><i class="fa-solid fa-hand-holding-dollar"></i>   Dodaj przychód</a></li>
-			<li><a href="/expenses/add"><i class="fa-solid fa-cart-shopping"></i>   Dodaj wydatek</a></li>
-			<li><a href="/balancesheet"><i class="fa-solid fa-scale-unbalanced-flip"></i>   Przeglądaj bilans</a></li>
-			<li><a href="/profile/show"><i class="fa-solid fa-gear"></i>   Ustawienia</a></li>
-			<li><a href="/logout"><i class="fa-sharp fa-solid fa-right-from-bracket"></i>   Wyloguj się</a></li>
+			<li><a href="/home" id="link-home"><i class="fa-solid fa-house"></i>   Home</a></li>
+			<li><a href="/incomes/add" id="link-incomes"><i class="fa-solid fa-hand-holding-dollar"></i>   Add income</a></li>
+			<li><a href="/expenses/add" id="link-expenses"><i class="fa-solid fa-cart-shopping"></i>   Add expense</a></li>
+			<li><a href="/balancesheet" id="link-balance"><i class="fa-solid fa-scale-unbalanced-flip"></i>   View balance</a></li><style> #link-balance{color:#F8F4EA ;}</style>
+			<li><a href="/profile/show" id="link-settings"><i class="fa-solid fa-gear"></i>   Settings</a></li>
+			<li><a href="/logout" id="link-logout"><i class="fa-sharp fa-solid fa-right-from-bracket"></i>   Log out</a></li>
 		</ul>
 	</nav>
 	
+	{% for message in flash_messages %}
+    <div id="flash-message" class="alert alert-{{ message.type }}">
+        {{ message.body }}
+    </div>
+    {% endfor %}
+
 	<main>
 		<div class="bilansprzychodow">
-			<h3>Przychody</h3>
+			<h3>Incomes</h3>
 			<ul>
 				{% set sum1 = 0 %}
 				{% for incomes in incomes %}
@@ -52,11 +54,11 @@
 						{% set sum1=sum1+(incomes.suma_przychodów) %}
 				{% endfor %}
 				<hr>
-				<p>SUMA: {{ sum1 }}</p>
+				<p>SUM: {{ sum1 }}</p>
 			</ul>
 		</div>
 		<div class="bilanswydatkow">
-			<h3>Wydatki</h3>
+			<h3>Expenses</h3>
 			<ul>
 				{% set sum2 = 0 %}
 				{% set wydatki=["['Kategoria', 'Suma wydatków'],"] %}
@@ -68,38 +70,34 @@
 						]) %}
 				{% endfor %}
 				<hr>
-				<p>SUMA: {{ sum2 }}</p>
+				<p>SUM: {{ sum2 }}</p>
 			</ul>
 		</div>
 
 		<div class="bilans">
-			<h3>Bilans</h3>
+			<h3>Balance</h3>
 			{% set sum3 = sum1 - sum2 %}
 			{{ sum3 }}
 			{% if sum3 < 0 %}
-			<p>Uwaga! Wpadasz w długi.</p>
+			<p>Attention! You're in debt.</p>
 			<style> .bilans{background-color: rgb(215, 78, 78);}</style>
 			{% endif %}
 			{% if sum3 > 0 %}
-			<p>Gratulacje! Świetnie zarządzasz finansami.</p>
+			<p>Congratulations! You manage your finances very well.</p>
 			<style> .bilans{background-color: rgb(67, 164, 67);}</style>
 			{% endif %}
 		</div>
 		<br>
-		<h3 id="pieChartTitle">Wydatki z wybranego okresu</h3>
+		<h3 id="pieChartTitle">Expenses from the selected period</h3>
 		{% if wydatki|length == 1 %}
-		<p>Brak wydatków</p>
+		<p>No expenses</p>
 		{% endif %}
 		{% if wydatki|length > 1 %}
 		<div id="piechart"></div>
 		{% endif %}
 	</main>
 
-    {% for message in flash_messages %}
-    <div class="alert alert-{{ message.type }}">
-        {{ message.body }}
-    </div>
-    {% endfor %}
+	<script src="/js/flash.js"></script>
 
     <script
     src="https://code.jquery.com/jquery-3.6.4.min.js"

@@ -52,8 +52,7 @@ class Categories extends \Core\Model
     public static function getExpensesCategories()
     {
         try {
-            //$db = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8",
-            //              $username, $password);
+            
             $user_id = Auth::getUser()->id;
 
             $db = static::getDB();
@@ -153,10 +152,32 @@ class Categories extends \Core\Model
             $stmt->bindValue(':idOfCategory', $idOfCategory, PDO::PARAM_INT);
 
             return $stmt->execute();
-    
-    
 
     }
+
+    
+    public static function checkIfTheCategoryHasIncome($categoryName)
+    {
+        $user_id = Auth::getUser()->id;
+        $idOfCategory = User::getIdOfIncomeCategory($categoryName, $user_id);
+
+        $sql = 'SELECT incomes.amount "amount_of_income", incomes.date_of_income "date_of_income" FROM incomes
+                WHERE income_category_assigned_to_user_id=:idOfCategory AND user_id=:user_id';
+        
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+            
+        $stmt->bindValue(':idOfCategory', $idOfCategory, PDO::PARAM_INT);
+        $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+
+        $stmt->execute();
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $results;
+
+    }
+
+
 
         /**
      * Delete category
@@ -178,6 +199,28 @@ class Categories extends \Core\Model
 
             return $stmt->execute();
     
+    }
+
+
+    public static function checkIfTheCategoryHasExpense($categoryName)
+    {
+        $user_id = Auth::getUser()->id;
+        $idOfCategory = User::getIdOfExpenseCategory($categoryName, $user_id);
+
+        $sql = 'SELECT expenses.amount "amount_of_expense", expenses.date_of_expense "date_of_expense" FROM expenses
+                WHERE expense_category_assigned_to_user_id=:idOfCategory AND user_id=:user_id';
+        
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+            
+        $stmt->bindValue(':idOfCategory', $idOfCategory, PDO::PARAM_INT);
+        $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+
+        $stmt->execute();
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $results;
+
     }
 
     /**
@@ -358,7 +401,9 @@ class Categories extends \Core\Model
             $idOfPaymentMethod = User::getIdOfPaymentMethod($paymentMethodName, $user_id);
 
             $sql = 'DELETE FROM payment_methods_assigned_to_users
-                    WHERE id=:idOfPaymentMethod';
+                    WHERE id=:idOfPaymentMethod;
+                    DELETE FROM expenses
+                    WHERE payment_method_assigned_to_user_id=:idOfPaymentMethod';
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);
@@ -369,6 +414,27 @@ class Categories extends \Core\Model
     
     }
 
+
+    public static function checkIfThePaymentMethodHasExpense($paymentMethodName)
+    {
+        $user_id = Auth::getUser()->id;
+        $idOfPaymentMethod = User::getIdOfPaymentMethod($paymentMethodName, $user_id);
+
+        $sql = 'SELECT expenses.amount "amount_of_expense", expenses.date_of_expense "date_of_expense" FROM expenses
+                WHERE payment_method_assigned_to_user_id=:idOfPaymentMethod AND user_id=:user_id';
+        
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+            
+        $stmt->bindValue(':idOfPaymentMethod', $idOfPaymentMethod, PDO::PARAM_INT);
+        $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+
+        $stmt->execute();
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $results;
+
+    }
 
     
      /**
