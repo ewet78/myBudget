@@ -196,8 +196,8 @@ button:hover
 	background-color: #579BB1;
 	color: #F8F4EA;
 	float: left;
-	width: 400px;
-	margin-left: 300px;
+	width: 25%;
+	margin-left: 20%;
 	margin-bottom: 20px;
 
 }
@@ -207,8 +207,8 @@ button:hover
 	background-color: #579BB1;
 	color: #F8F4EA;
 	float: right;
-	width: 400px;
-	margin-right: 300px;
+	width: 25%;
+	margin-right: 20%;
 	margin-bottom: 20px;
 
 }
@@ -217,16 +217,17 @@ button:hover
 {
 	background-color: #579BB1;
 	color: #F8F4EA;
-	width: 950px;
+	width: 60%;
 	clear: both;
 	margin: auto;
 }
 
 div#piechart
 {
-	margin-left: 500px;
-	position: relative;
-	width: 300 px;
+    margin-left: auto;
+	margin-right: auto;
+    width: fit-content;
+    position: relative;
 }
 
 #pieChartTitle

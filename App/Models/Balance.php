@@ -15,6 +15,31 @@ class Balance extends \Core\Model
 {
 
     /**
+     * Get the last day of the Month from the given Year and Month
+     *
+     * @return string
+     */
+    private function getEndDate($Year, $Month)
+    {
+        if ($Month == '01' || $Month == '03' || $Month == '05' || $Month == '07' || $Month == '08' || $Month == '10' || $Month == '12') {
+            $end_date = $Year. '-' . $Month . '-31';
+        }
+        if ($Month == '04' || $Month == '06' || $Month == '09' || $Month == '11') {
+            $end_date = $Year. '-' . $Month . '-30';
+        }
+        if ($Month == '02')
+        {
+            if(($Year%4==0 && $Year%100!=0) || $Year%400==0) {
+                $end_date = $Year. '-' . $Month . '-29';
+            } else {
+                $end_date = $Year. '-' . $Month . '-28';
+            }
+        }
+
+        return $end_date;
+    }
+
+    /**
      * Get all the incomes as an associative array
      *
      * @return array
@@ -27,20 +52,9 @@ class Balance extends \Core\Model
             $Month = date('m');
             $Year = date('Y');
             $start_date = $Year. '-' . $Month . '-01';
-            if ($Month == '01' || $Month == '03' || $Month == '05' || $Month == '07' || $Month == '08' || $Month == '10' || $Month == '12') {
-                $end_date = $Year. '-' . $Month . '-31';
-            }
-            if ($Month == '04' || $Month == '06' || $Month == '09' || $Month == '11') {
-                $end_date = $Year. '-' . $Month . '-30';
-            }
-            if ($Month == '02')
-            {
-                if(($Year%4==0 && $Year%100!=0) || $Year%400==0) {
-                    $end_date = $Year. '-' . $Month . '-29';
-                } else {
-                    $end_date = $Year. '-' . $Month . '-28';
-                }
-            }
+            $endDateObject = new self();
+            $end_date = $endDateObject -> getEndDate($Year, $Month);
+            
 
         }
 
@@ -59,21 +73,8 @@ class Balance extends \Core\Model
             }
 
             $start_date = $Year. '-' . $Month . '-01';
-
-            if ($Month == '01' || $Month == '03' || $Month == '05' || $Month == '07' || $Month == '08' || $Month == '10' || $Month == '12') {
-                $end_date = $Year. '-' . $Month . '-31';
-            }
-            if ($Month == '04' || $Month == '06' || $Month == '09' || $Month == '11') {
-                $end_date = $Year. '-' . $Month . '-30';
-            }
-            if ($Month == '02')
-            {
-                if(($Year%4==0 && $Year%100!=0) || $Year%400==0) {
-                    $end_date = $Year. '-' . $Month . '-29';
-                } else {
-                    $end_date = $Year. '-' . $Month . '-28';
-                }
-            }
+            $endDateObject = new self();
+            $end_date = $endDateObject -> getEndDate($Year, $Month);
             
 
         }
@@ -121,7 +122,7 @@ class Balance extends \Core\Model
     }
 
 
-     /**
+    /**
      * Get all the expenses as an associative array
      *
      * @return array
@@ -135,20 +136,8 @@ class Balance extends \Core\Model
             $Month = date('m');
             $Year = date('Y');
             $start_date = $Year. '-' . $Month . '-01';
-            if ($Month == '01' || $Month == '03' || $Month == '05' || $Month == '07' || $Month == '08' || $Month == '10' || $Month == '12') {
-                $end_date = $Year. '-' . $Month . '-31';
-            }
-            if ($Month == '04' || $Month == '06' || $Month == '09' || $Month == '11') {
-                $end_date = $Year. '-' . $Month . '-30';
-            }
-            if ($Month == '02')
-            {
-                if(($Year%4==0 && $Year%100!=0) || $Year%400==0) {
-                    $end_date = $Year. '-' . $Month . '-29';
-                } else {
-                    $end_date = $Year. '-' . $Month . '-28';
-                }
-            }
+            $endDateObject = new self();
+            $end_date = $endDateObject -> getEndDate($Year, $Month);
 
         }
 
@@ -167,22 +156,8 @@ class Balance extends \Core\Model
             }
 
             $start_date = $Year. '-' . $Month . '-01';
-
-            if ($Month == '01' || $Month == '03' || $Month == '05' || $Month == '07' || $Month == '08' || $Month == '10' || $Month == '12') {
-                $end_date = $Year. '-' . $Month . '-31';
-            }
-            if ($Month == '04' || $Month == '06' || $Month == '09' || $Month == '11') {
-                $end_date = $Year. '-' . $Month . '-30';
-            }
-            if ($Month == '02')
-            {
-                if(($Year%4==0 && $Year%100!=0) || $Year%400==0) {
-                    $end_date = $Year. '-' . $Month . '-29';
-                } else {
-                    $end_date = $Year. '-' . $Month . '-28';
-                }
-            }
-            
+            $endDateObject = new self();
+            $end_date = $endDateObject -> getEndDate($Year, $Month);            
 
         }
 
@@ -231,5 +206,4 @@ class Balance extends \Core\Model
             echo $e->getMessage();
         }
     }
- 
 }
