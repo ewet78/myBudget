@@ -17,7 +17,7 @@ class Incomes extends Authenticated
 {
 
     /**
-     * Show an adding expenses form
+     * Show an adding incomes form
      *
      * @return void
      */
@@ -31,7 +31,7 @@ class Incomes extends Authenticated
     }
 
     /**
-     * Adding a new expense
+     * Adding a new income
      *
      * @return void
      */
@@ -43,6 +43,8 @@ class Incomes extends Authenticated
 
             Flash::addMessage('Income added');
 
+            $this->redirect('/incomes/add');
+        } else {
             $this->redirect('/incomes/add');
         }
     }
