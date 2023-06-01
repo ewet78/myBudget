@@ -57,7 +57,7 @@ class Categories extends \Core\Model
 
             $db = static::getDB();
 
-            $sql = 'SELECT expenses_category_assigned_to_users.name "kategorie_wydatków"
+            $sql = 'SELECT expenses_category_assigned_to_users.name "kategorie_wydatków", expenses_category_assigned_to_users.limit_value "limit_value"
                     FROM expenses_category_assigned_to_users 
                     WHERE expenses_category_assigned_to_users.user_id = :id 
                     ORDER BY kategorie_wydatków ASC';
@@ -76,6 +76,41 @@ class Categories extends \Core\Model
             echo $e->getMessage();
         }
     }
+
+
+    public static function getLimit($category)
+    {
+        try {
+            if (strpos($category, '-') !== false) {
+                $category = str_replace('-', ' ', $category);
+            }
+
+            $user_id = Auth::getUser()->id;
+
+            $db = static::getDB();
+
+            $sql = 'SELECT expenses_category_assigned_to_users.limit_value "limit_value"
+                    FROM expenses_category_assigned_to_users 
+                    WHERE expenses_category_assigned_to_users.user_id = :id AND expenses_category_assigned_to_users.name = :category';
+
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':id', $user_id, PDO::PARAM_INT);
+            $stmt->bindValue(':category', $category, PDO::PARAM_STR);
+
+            $stmt->execute();
+
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $results[0]['limit_value'];
+            
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+
+
+   
     /**
      * Edit category
      *
@@ -116,9 +151,25 @@ class Categories extends \Core\Model
             $oldName = $data['oldCategoryName'];
             $user_id = Auth::getUser()->id;
             $idOfCategory = User::getIdOfExpenseCategory($oldName, $user_id);
+            if (isset($data['limit'])) {
+                
+                $limit = $data['limitValue'];
+                $sql = 'UPDATE expenses_category_assigned_to_users
+                        SET name = :name, limit_value = :limit
+                        WHERE id=:idOfCategory';
+                
+                $db = static::getDB();
+                $stmt = $db->prepare($sql);
+            
+                $stmt->bindValue(':name', $name, PDO::PARAM_STR);
+                $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+                $stmt->bindValue(':idOfCategory', $idOfCategory, PDO::PARAM_INT);
+
+
+            } else {
 
             $sql = 'UPDATE expenses_category_assigned_to_users
-                    SET name = :name
+                    SET name = :name, limit_value = 0
                     WHERE id=:idOfCategory';
 
             $db = static::getDB();
@@ -126,6 +177,7 @@ class Categories extends \Core\Model
             
             $stmt->bindValue(':name', $name, PDO::PARAM_STR);
             $stmt->bindValue(':idOfCategory', $idOfCategory, PDO::PARAM_INT);
+            }
 
             return $stmt->execute();
     }
@@ -258,7 +310,7 @@ class Categories extends \Core\Model
      *
      * @return boolean True if the data was updated, false otherwise
      */
-    public static function addExpensesCategory($categoryName)
+    public static function addExpensesCategory($categoryName, $limit)
     {
             $user_id = Auth::getUser()->id;
 
@@ -269,14 +321,15 @@ class Categories extends \Core\Model
 
             } else {
 
-            $sql = 'INSERT INTO expenses_category_assigned_to_users (user_id, name)
-                    VALUES (:user_id, :categoryName)';
+            $sql = 'INSERT INTO expenses_category_assigned_to_users (user_id, name, limit_value)
+                    VALUES (:user_id, :categoryName, :limit)';
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);
             
             $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
             $stmt->bindValue(':categoryName', $categoryName, PDO::PARAM_STR);
+            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 
             return $stmt->execute();
             }
