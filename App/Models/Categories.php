@@ -23,8 +23,7 @@ class Categories extends \Core\Model
     public static function getIncomesCategories()
     {
         try {
-            //$db = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8",
-            //              $username, $password);
+            
             $user_id = Auth::getUser()->id;
 
             $db = static::getDB();

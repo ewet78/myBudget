@@ -548,7 +548,7 @@ class User extends \Core\Model
             return $stmt->execute();  
         }
 
-        return false;
+        else return false;
 
     }
 
