@@ -6,6 +6,7 @@ use \Core\View;
 use \App\Models\User;
 use \App\Flash;
 use \App\Models\Categories;
+use \App\Models\Balance;
 
 /**
  * Expenses controller
@@ -28,7 +29,7 @@ class Expenses extends Authenticated
         $paymentMethods = Categories::getPaymentMethods();
         View::renderTemplate('Expenses/add.html', [
             'expensesCategories' => $categoriesOfExpenses,
-            'paymentMethods' => $paymentMethods
+            'paymentMethods' => $paymentMethods,
         ]);
     }
 
@@ -48,5 +49,26 @@ class Expenses extends Authenticated
             $this->redirect('/expenses/add');
         }
     }
+
+
+    public function limitAction()
+    {
+        
+        $category = urldecode($this->route_params['category']);
+        
+        
+        echo json_encode(Categories::getLimit($category), JSON_UNESCAPED_UNICODE);
+      
+     }
+
+
+
+
+     public function limitvalueAction()
+     {
+        $category = urldecode($this->route_params['category']);
+        $date = urldecode($_GET['date_of_expense']);
+        echo json_encode(Balance::getLimitValue($category, $date), JSON_UNESCAPED_UNICODE);
+     }
 
 }

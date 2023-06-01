@@ -173,8 +173,13 @@ class Category extends \Core\Controller
     public function updateaddedexpensescategoryAction()
     {   
         $categoryName = $_POST['nameOfCategory'];
+        if (isset($_POST['limit'])) {
+            $limit = $_POST['limitValue'];
+        } else {
+            $limit = 0 ;
+        }
         $category = new Categories;
-        if (Categories::addExpensesCategory($categoryName)) {
+        if (Categories::addExpensesCategory($categoryName, $limit)) {
             Flash::addMessage('Category added');
             $this->redirect('/profile/showeditcategory');
         }

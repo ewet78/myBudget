@@ -206,4 +206,50 @@ class Balance extends \Core\Model
             echo $e->getMessage();
         }
     }
+
+
+
+
+    public static function getLimitValue($category, $date)
+    {
+        try {
+            if (strpos($category, '-') !== false) {
+                $category = str_replace('-', ' ', $category);
+            }
+
+            $user_id = Auth::getUser()->id;
+
+            $idOfCategory = User::getIdOfExpenseCategory($category, $user_id);
+
+            $Month = date("m", strtotime($date));
+            $Year = date("Y", strtotime($date));
+            $start_date = $Year.'-'.$Month.'-01';
+            $endDateObject = new self();
+            $end_date = $endDateObject -> getEndDate($Year, $Month);
+
+            
+
+            $db = static::getDB();
+
+            $sql = 'SELECT SUM(expenses.amount) "expenses_amount"
+                    FROM expenses
+                    WHERE expenses.user_id = :id AND expenses.expense_category_assigned_to_user_id = :idOfCategory AND expenses.date_of_expense BETWEEN :start_date and :end_date';
+
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':id', $user_id, PDO::PARAM_INT);
+            $stmt->bindValue(':idOfCategory', $idOfCategory, PDO::PARAM_STR);
+            $stmt->bindValue(':start_date', $start_date, PDO::PARAM_STR);
+            $stmt->bindValue(':end_date', $end_date, PDO::PARAM_STR);
+
+            $stmt->execute();
+
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            return $results[0]['expenses_amount'];
+            
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
 }

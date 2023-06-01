@@ -59,6 +59,9 @@
             <label for="inputName">Catgory name</label>
             <input type="hidden" name="oldCategoryName" value="{{ categoryName }}">
             <input id="inputName" name="nameOfCategory" placeholder="NameOfCategory" value="{{ categoryName }}" required class="form-control"/>
+            <input type="checkbox" id="limit" name="limit" {% if limitValue != 0 %} checked {% endif %}>
+            <label for="limit">Turn on limit for the category</label>
+            <input type="number" id="limitValue" name="limitValue" placeholder="0,00" step="0.01" min="0.01" {% if limitValue != 0 %} value="{{ limitValue }}" {% endif %} required class="form-control"/>
         </div>
         <a href="/profile/showeditcategory">Cancel</a>
         <button type="submit">Save</button>

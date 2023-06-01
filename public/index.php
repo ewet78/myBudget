@@ -50,6 +50,11 @@ session_start();
 $router = new Core\Router();
 
 // Add the routes
+
+$router->add('api/limitvalue/{category:[\wżźćńółęąśŻŹĆŃÓŁĘĄŚ \-]+}', ['controller' => 'Expenses', 'action' => 'limitvalue']);
+
+$router->add('api/limit/{category:[\wżźćńółęąśŻŹĆŃÓŁĘĄŚ \-]+}', ['controller' => 'Expenses', 'action' => 'limit']);
+
 $router->add('', ['controller' => 'Home', 'action' => 'index']);
 $router->add('{controller}/{action}');
 $router->add('{controller}/{id:\d+}/{action}');
@@ -78,4 +83,6 @@ $router->add('addpaymentmethod', ['controller' => 'Category', 'action' => 'addpa
 
 $router->add('deleteaccount', ['controller' => 'Profile', 'action' => 'deleteaccount']);
 
+
+//$router->dispatch($_SERVER['QUERY_STRING']);
 $router->dispatch($_SERVER['QUERY_STRING']);

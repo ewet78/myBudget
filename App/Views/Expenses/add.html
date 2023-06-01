@@ -45,61 +45,82 @@
     {% endfor %}
 	
 	<main>
-        <div id="container2">
-						
-            <form action="/expenses/new" method="post">
-                <div id="wydatek">
-                    <label>Amount   <input type="number" name="amount" placeholder="0,0" step="0.01" min="0.01" required></label>
-                </div>
-                <div id="wydatek">
-                    <label>Date   <input type="date" id="date_of_expense" name="date_of_expense" required></label>
+        <div id="auto">
+            <div id="container2">
+                            
+                <form action="/expenses/new" method="post">
+                    <div id="wydatek">
+                        <label>Amount   <input type="number" id="amount" name="amount" placeholder="0,0" step="0.01" min="0.01" required></label>
+                    </div>
+                    <div id="wydatek">
+                        <label>Date   <input type="date" id="date_of_expense" name="date_of_expense" required></label>
 
-                    <script>
-                        // Get today's date
-                        var today = new Date();
-                      
-                        // Format the date as YYYY-MM-DD
-                        var formattedDate = today.toISOString().split('T')[0];
-                      
-                        // Set the value of the input element
-                        document.getElementById('date_of_expense').value = formattedDate;
-                    </script>
+                        <script>
+                            // Get today's date
+                            var today = new Date();
+                        
+                            // Format the date as YYYY-MM-DD
+                            var formattedDate = today.toISOString().split('T')[0];
+                        
+                            // Set the value of the input element
+                            document.getElementById('date_of_expense').value = formattedDate;
+                        </script>
 
+                    </div>
+                    <div id="wydatek">
+                        <fieldset>
+                            
+                            <legend> Payment method </legend>
+                            
+                            {% for paymentMethod in paymentMethods %}
+                            <div><label><input type="radio" name="payment_method_assigned_to_user_id" value="{{ paymentMethod.metody_płatności }}" {% if loop.index == 1 %}checked{% endif %}>{{ paymentMethod.metody_płatności }}</label></div>
+                            {% endfor %}
+                            
+                        </fieldset>
+                    </div>
+                    <div id="wydatek">
+                        <label for="kategoria">Category</label>
+                        <select id="kategoria" name="expense_category_assigned_to_user_id">
+
+                            <option value="--Choose Category--">--Choose Category--</option>
+                            {% for expensesCategory in expensesCategories %}
+                            <option value="{{ expensesCategory.kategorie_wydatków }}">{{ expensesCategory.kategorie_wydatków }}</option>
+                            {% endfor %}
+                            
+                        </select>
+                    </div>
+                    <div id="wydatek">
+                        <div><label for="komentarz">Comment (optional):</label></div>
+                        <textarea name="expense_comment" id="komentarz" rows="4" cols="34"></textarea>
+                    </div>
+                    <div id="wydatekSubmit">
+                        <button id="button2"><a href="/home" id="button2anuluj">Cancel</a></button>
+                        <button id="button1" type="submit">Add</button>
+                    </div>
+                </form>
+            </div>
+            <div id="wrapper">
+                <div id = "limitInfo">
+                    <h3>Limit info</h3>
+                    <br>
+                    <div id="limitInfoForCategory">Category required</div>
                 </div>
-                <div id="wydatek">
-                    <fieldset>
-                        
-                        <legend> Payment method </legend>
-                        
-                        {% for paymentMethod in paymentMethods %}
-                        <div><label><input type="radio" name="payment_method_assigned_to_user_id" value="{{ paymentMethod.metody_płatności }}" {% if loop.index == 1 %}checked{% endif %}>{{ paymentMethod.metody_płatności }}</label></div>
-                        {% endfor %}
-                        
-                    </fieldset>
+                <div id = "limitValue">
+                    <h3>Limit value</h3>
+                    <br>
+                    <div id="limitValueForCategory">Category & date required</div>
                 </div>
-                <div id="wydatek">
-                    <label for="kategoria">Category</label>
-                    <select id="kategoria" name="expense_category_assigned_to_user_id">
-                    
-                        {% for expensesCategory in expensesCategories %}
-                        <option value="{{ expensesCategory.kategorie_wydatków }}">{{ expensesCategory.kategorie_wydatków }}</option>
-                        {% endfor %}
-                        
-                    </select>
+                <div id = "cashLeft">
+                    <h3>Cash left</h3>
+                    <br>
+                    <div id="cashLeftForCategory">Category, date & amount required</div>
                 </div>
-                <div id="wydatek">
-                    <div><label for="komentarz">Comment (optional):</label></div>
-                    <textarea name="expense_comment" id="komentarz" rows="4" cols="34"></textarea>
-                </div>
-                <div id="wydatekSubmit">
-                    <button id="button2"><a href="/home" id="button2anuluj">Cancel</a></button>
-                    <button id="button1" type="submit">Add</button>
-                </div>
-            </form>
-    </div>
+            </div>
+        </div>
 	</main>
 
 	<script src="/js/flash.js"></script>
+    <script src="/js/limit.js"></script>
 
     <script
     src="https://code.jquery.com/jquery-3.6.4.min.js"

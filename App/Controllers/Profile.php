@@ -128,9 +128,11 @@ class Profile extends Authenticated
         if(isset($_POST['editButton'])){
             $index = $_POST['editButton'];
             $categoryName = $_POST['categoryName'][$index];
+            $limit = $_POST['limitValue'][$index];
 
             View::renderTemplate('Profile/editexpensescategory.html', [
                 'categoryName' => $categoryName, // Pass the category value to the view
+                'limitValue' => $limit
             ]);
         }
         else View::renderTemplate('Profile/editexpensescategory.html');

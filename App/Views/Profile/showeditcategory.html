@@ -82,11 +82,14 @@
             <label for="inputName">Expenses categories</label>
             {% for index, expensesCategory in expensesCategories %}
             <p>
-                {{ expensesCategory.kategorie_wydatków }}
+                {{ expensesCategory.kategorie_wydatków }} 
+                {% if expensesCategory.limit_value != 0 %} <br> Limit: {{ expensesCategory.limit_value }} {% endif %}
                 <input type="hidden" name="categoryName[{{ loop.index }}]" value="{{ expensesCategory.kategorie_wydatków }}">
+                <input type="hidden" name="limitValue[{{ loop.index }}]" value="{{ expensesCategory.limit_value }}">
                     <button id="buttonEditCategory" name="editButton" value="{{ loop.index }}" type="submit">Edit</button>|
                     <a href="/deleteexpensescategory?categoryName={{ expensesCategory.kategorie_wydatków }}" id="deleteExpenseLink{{ loop.index }}" data-category="{{ expensesCategory.kategorie_wydatków }}">Delete</a>
             </p>
+            <hr>
             {% endfor %}
             <a href="/addexpensescategory">Add category</a>
         </div>
