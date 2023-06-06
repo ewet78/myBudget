@@ -11,7 +11,9 @@ const renderValueBox = (limitValue, categoryValue) => {
 }
 
 const renderLeftBox = (limitInfoData, monthlyExpenses, amount, category) => {
-    const balance = limitInfoData - monthlyExpenses - amount;
+    let balance = limitInfoData - monthlyExpenses - amount;
+    balance = balance.round(2);
+
     if (limitInfoData === 0) {
         cashLeftForCategory.style.color = "#579BB1";
         cashLeftForCategory.textContent =  `You do not set the limit for ${category} category`;
@@ -24,6 +26,10 @@ const renderLeftBox = (limitInfoData, monthlyExpenses, amount, category) => {
     } 
 }
 
+Number.prototype.round = function(places)
+{
+    return +(Math.round(this+"e+"+places)+"e-"+places);
+}
 
 let category = document.querySelector("#kategoria");
 
@@ -133,4 +139,5 @@ form.addEventListener("submit", (event) => {
     alert("Please choose a category before submitting the form.");
   }
 });
+
 
